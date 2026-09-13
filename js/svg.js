@@ -64,6 +64,15 @@ RN.svg = (function () {
       '<path d="M60 40c4 4 4 8 0 12-4-4-4-8 0-12Z" fill="' + C.greenDark + '"/>' +
       "</g>",
 
+    "risol": () =>
+      '<g transform="rotate(-8 60 62)">' +
+      '<ellipse cx="60" cy="72" rx="35" ry="15" fill="' + C.doughDark + '"/>' +
+      '<rect x="25" y="40" width="70" height="34" rx="17" fill="' + C.dough + '"/>' +
+      '<path d="M40 44c14-6 30-6 44 2" stroke="' + C.doughDark + '" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+      '<ellipse cx="30" cy="57" rx="9" ry="15" fill="' + C.choc + '"/>' +
+      '<ellipse cx="30" cy="57" rx="5" ry="10" fill="' + C.chocDark + '"/>' +
+      "</g>",
+
     "cake-slice": () =>
       '<g transform="translate(24 26)">' +
       '<path d="M6 40 L60 20 L66 24 L66 62 L6 68 Z" fill="' + C.dough + '"/>' +

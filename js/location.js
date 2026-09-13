@@ -57,6 +57,7 @@ window.RN = window.RN || {};
               <dt>Alamat</dt><dd>${L.address}</dd>
               <dt>Jam buka</dt><dd>${L.hours}</dd>
               <dt>Kontak</dt><dd>${L.phone}</dd>
+              <dt>Media sosial</dt><dd>Instagram &amp; TikTok ${L.instagram}</dd>
             </dl>
             <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.2rem">
               <a class="btn btn--ghost" href="${L.mapsUrl}" target="_blank" rel="noopener">Buka di Google Maps</a>

@@ -80,17 +80,20 @@ RN.store = (function () {
   function addItem(product, qty, variant) {
     qty = Math.max(1, qty | 0 || 1);
     const v = variant || null;
-    const vLabel = v && product.variants
-      ? (product.variants.find((x) => x.id === v) || {}).label || ""
-      : "";
+    const vObj = v && product.variants ? product.variants.find((x) => x.id === v) : null;
+    const vLabel = vObj ? vObj.label || "" : "";
+    // a variant may carry its own price (e.g. per-piece vs. per-box);
+    // falls back to the product's base price otherwise
+    const unitPrice = vObj && typeof vObj.price === "number" ? vObj.price : product.price;
     const key = keyFor(product.id, v);
     const found = state.items.find((i) => i.key === key);
     if (found) {
       found.qty = Math.min(99, found.qty + qty);
     } else {
       state.items.push({
-        key, id: product.id, name: product.name, price: product.price,
-        shape: product.shape, variant: v, variantLabel: vLabel, qty,
+        key, id: product.id, name: product.name, price: unitPrice,
+        shape: product.shape, image: product.image || null, focus: product.focus || null,
+        variant: v, variantLabel: vLabel, qty,
       });
     }
     emit();

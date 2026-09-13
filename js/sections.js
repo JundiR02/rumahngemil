@@ -19,7 +19,7 @@ RN.sections = (function () {
       <li>
         <button type="button" class="dish" data-open-product="${p.id}"
           aria-label="Lihat ${p.name}, ${idr(p.price)}">
-          <span class="dish__art" aria-hidden="true">${RN.svg.food(p.shape)}</span>
+          <span class="dish__art${p.image ? " dish__art--photo" : ""}" aria-hidden="true">${RN.media.art(p)}</span>
           <span class="dish__label">${p.name}</span>
           <span class="dish__price">${idr(p.price)}</span>
         </button>

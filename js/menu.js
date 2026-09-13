@@ -20,7 +20,7 @@ window.RN = window.RN || {};
         <article class="prodcard" style="--i:${i}">
           ${p.badge ? `<span class="prodcard__badge">${p.badge}</span>` : ""}
           <button type="button" class="prodcard__art" data-open-product="${p.id}"
-            aria-label="Lihat detail ${p.name}">${RN.svg.food(p.shape)}</button>
+            aria-label="Lihat detail ${p.name}">${RN.media.art(p)}</button>
           <h3 class="prodcard__name">${p.name}</h3>
           <p class="prodcard__desc">${p.description}</p>
           <div class="prodcard__foot">
@@ -99,11 +99,16 @@ window.RN = window.RN || {};
     let qty = 1;
     let variant = p.variants && p.variants.length ? p.variants[0].id : null;
 
+    function unitPrice() {
+      const v = variant && p.variants ? p.variants.find((x) => x.id === variant) : null;
+      return v && typeof v.price === "number" ? v.price : p.price;
+    }
+
     const variantHtml = p.variants && p.variants.length
       ? `<div class="proddetail__variants" role="group" aria-label="Pilihan">
           ${p.variants.map((v) => `
             <button type="button" class="variant-chip" data-variant="${v.id}"
-              aria-pressed="${v.id === variant}">${v.label}</button>`).join("")}
+              aria-pressed="${v.id === variant}">${v.label}${typeof v.price === "number" ? ` · ${idr(v.price)}` : ""}</button>`).join("")}
         </div>`
       : "";
 
@@ -113,10 +118,10 @@ window.RN = window.RN || {};
       title: p.name,
       body: `
         <div class="proddetail">
-          <div class="proddetail__art">${RN.svg.food(p.shape)}</div>
+          <div class="proddetail__art">${RN.media.art(p)}</div>
           <div class="proddetail__info">
             <p class="proddetail__desc">${p.description}</p>
-            <p class="price proddetail__price" data-price>${idr(p.price)}</p>
+            <p class="price proddetail__price" data-price>${idr(unitPrice())}</p>
             ${variantHtml}
             <div class="proddetail__row">
               <div class="qty" role="group" aria-label="Jumlah">
@@ -135,7 +140,7 @@ window.RN = window.RN || {};
         const priceEl = el.querySelector("[data-price]");
         const cta = el.querySelector("[data-add]");
 
-        function syncPrice() { priceEl.textContent = idr(p.price * qty); }
+        function syncPrice() { priceEl.textContent = idr(unitPrice() * qty); }
 
         el.querySelectorAll("[data-q]").forEach((b) =>
           b.addEventListener("click", () => {
@@ -149,6 +154,7 @@ window.RN = window.RN || {};
             variant = b.dataset.variant;
             el.querySelectorAll("[data-variant]").forEach((x) =>
               x.setAttribute("aria-pressed", String(x === b)));
+            syncPrice();
           }));
 
         cta.addEventListener("click", () => {

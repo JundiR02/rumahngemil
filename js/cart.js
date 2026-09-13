@@ -69,7 +69,7 @@ RN.cart = (function () {
       }
       return s.items.map((it) => `
         <div class="drawer__line" data-key="${it.key}">
-          <div class="drawer__thumb" aria-hidden="true">${RN.svg.food(it.shape)}</div>
+          <div class="drawer__thumb" aria-hidden="true">${RN.media.art(it)}</div>
           <div>
             <div class="drawer__nm">${it.name}</div>
             ${it.variantLabel ? `<div class="drawer__vr">${it.variantLabel}</div>` : ""}
