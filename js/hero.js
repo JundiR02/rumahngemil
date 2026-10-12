@@ -163,19 +163,27 @@ RN.hero = (function () {
       '<button type="button" class="tourcard__close" data-tc-close aria-label="Tutup tur">' +
       '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>' +
       "</button>" +
-      '<div class="tourcard__dots" data-tc-dots aria-hidden="true">' +
-      TOUR_STEPS.map(() => '<span class="tourcard__dot" data-tc-dot></span>').join("") +
+      '<div class="tourcard__dots" data-tc-dots>' +
+      TOUR_STEPS.map((s, i) => `<button type="button" class="tourcard__dot" data-tc-dot aria-label="Langkah ${i + 1}: ${s.title}"></button>`).join("") +
       "</div>" +
       '<p class="tourcard__eyebrow" data-tc-eyebrow></p>' +
       '<h3 class="tourcard__title" data-tc-title></h3>' +
       '<p class="tourcard__body" data-tc-body></p>' +
       '<a href="#" class="tourcard__link" data-tc-link hidden></a>' +
+      '<p class="tourcard__maplabel">Posisi di denah booth</p>' +
+      '<div class="tourcard__map" aria-hidden="true">' +
+      '<span class="tourcard__map-zone tourcard__map-zone--outlet"></span>' +
+      '<span class="tourcard__map-zone tourcard__map-zone--homemade"></span>' +
+      '<span class="tourcard__map-zone tourcard__map-zone--location"></span>' +
+      '<span class="tourcard__map-dot" data-tc-mapdot></span>' +
+      "</div>" +
       '<div class="tourcard__nav">' +
       '<button type="button" class="btn btn--ghost" data-tc-back></button>' +
       '<button type="button" class="btn btn--primary" data-tc-next></button>' +
       "</div>";
     stage.appendChild(tourCard);
     tourCard.querySelector("[data-tc-close]").addEventListener("click", () => endTour());
+    tourCard.querySelectorAll("[data-tc-dot]").forEach((dot, i) => dot.addEventListener("click", () => goToStep(i)));
     return tourCard;
   }
 
@@ -186,6 +194,11 @@ RN.hero = (function () {
     tourCard.querySelector("[data-tc-eyebrow]").textContent = `Langkah ${tourIndex + 1} dari ${TOUR_STEPS.length}`;
     tourCard.querySelector("[data-tc-title]").textContent = step.title;
     tourCard.querySelector("[data-tc-body]").textContent = step.body;
+
+    const mapDot = tourCard.querySelector("[data-tc-mapdot]");
+    const [mapLeft, mapTop] = step.point.origin.split(" ").map(parseFloat);
+    mapDot.style.left = mapLeft + "%";
+    mapDot.style.top = mapTop + "%";
 
     const linkEl = tourCard.querySelector("[data-tc-link]");
     if (step.link) {
@@ -213,6 +226,7 @@ RN.hero = (function () {
 
   function nextStep() { if (tourIndex < TOUR_STEPS.length - 1) { tourIndex++; renderStep(); } }
   function prevStep() { if (tourIndex > 0) { tourIndex--; renderStep(); } }
+  function goToStep(i) { const clamped = clamp(i, 0, TOUR_STEPS.length - 1); if (clamped !== tourIndex) { tourIndex = clamped; renderStep(); } }
 
   function onTourKey(e) {
     if (e.key === "Escape") { e.preventDefault(); endTour(); }
