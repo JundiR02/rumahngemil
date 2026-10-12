@@ -95,17 +95,22 @@
 .hero {
   position: relative;
   z-index: 2;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
   isolation: isolate;
   background: var(--cream);
   overflow: hidden;
 }
 
-.hero__stage {
+/* a tall scroll track: hero__stage pins in place while it scrolls past,
+   so scrolling the page reads as "walking up to the booth" */
+.hero__approach {
   position: relative;
-  flex: 1;
+  height: 230vh;
+}
+
+.hero__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -146,6 +151,20 @@
   box-shadow: var(--sh-1);
 }
 
+/* ------------------------ approach (scroll = walk) ---------------- */
+/* wraps the scene so "walking closer" (scroll-driven) and "panning to
+   a point" (tour/hotspot-driven, on .hero__scene below) never fight
+   over the same transform */
+.hero__approachbox {
+  transform:
+    scale(calc(.58 + .42 * var(--approach, 1)))
+    translateY(calc(36px * (1 - var(--approach, 1))));
+  filter:
+    saturate(calc(72% + 28% * var(--approach, 1)))
+    brightness(calc(95% + 5% * var(--approach, 1)));
+  will-change: transform;
+}
+
 /* ----------------------------- scene --------------------------- */
 /* the illustration sits below the wordmark; the frame crops the
    flattened title band off the top so it never clashes with ours */
@@ -153,7 +172,8 @@
   position: relative;
   width: min(92vw, 50rem, calc(52svh * 1.079));
   transform-origin: 47% 42%;
-  transition: transform var(--dur-cam) var(--ease-out), filter var(--dur-cam) var(--ease-out);
+  transform: scale(var(--tour-scale, 1));
+  transition: transform .7s var(--ease-out), transform-origin .7s var(--ease-out);
   will-change: transform;
   --px: 0; --py: 0;
 }
@@ -171,11 +191,24 @@
   object-fit: cover;
   object-position: 50% 90%;
   transform: translate3d(calc(var(--px) * 3px), calc(var(--py) * 3px), 0) scale(1.04);
+  transition: filter .5s var(--ease);
 }
 
-/* camera push toward the outlet when a deep interaction opens */
-.hero.is-camera .hero__scene { transform: scale(1.1) translateY(1%); }
-.hero.is-camera .hero__img { filter: saturate(.94) brightness(.97); }
+/* pan/zoom toward a point — driven by RN.hero.panTo(), used by both the
+   "lihat menu" hotspot and the guided tour */
+.hero[data-zoomed="true"] .hero__img { filter: saturate(.94) brightness(.97); }
+
+/* dims the rest of the scene so the panned-to point reads as the focus */
+.hero__vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  background: radial-gradient(ellipse at center, transparent 42%, rgba(58, 42, 27, .4) 100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .5s var(--ease);
+}
+.hero[data-touring="true"] .hero__vignette { opacity: 1; }
 
 .hero__hint {
   max-width: 36ch;
@@ -186,6 +219,81 @@
   transition: opacity var(--dur-3) var(--ease);
 }
 .hero__hint.is-dim { opacity: 0; }
+.hero[data-touring="true"] .hero__hint { opacity: 0; }
+
+/* ------------------------------ tour cta --------------------------- */
+.tour-cta {
+  position: relative;
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  padding: .72rem 1.35rem;
+  font-weight: 700;
+  font-size: .88rem;
+  color: var(--accent-ink);
+  background: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 70%, #000 30%);
+  border-radius: var(--r-pill);
+  box-shadow: var(--sh-2);
+  opacity: 0;
+  transform: translateY(10px) scale(.96);
+  pointer-events: none;
+  transition:
+    opacity var(--dur-3) var(--ease-out),
+    transform var(--dur-3) var(--ease-out),
+    background-color var(--dur-1) var(--ease);
+}
+.tour-cta.is-visible { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+.hero[data-touring="true"] .tour-cta.is-visible { opacity: 0; pointer-events: none; }
+.tour-cta:hover { background: color-mix(in srgb, var(--accent) 88%, #000 12%); transform: translateY(-2px); }
+.tour-cta:active { transform: translateY(0) scale(.96); }
+
+/* ------------------------------ tour card -------------------------- */
+.tourcard {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(1rem, 4vh, 2.5rem);
+  translate: -50% 12px;
+  z-index: 10;
+  width: min(420px, 90vw);
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-3);
+  box-shadow: var(--sh-lift);
+  padding: 1.2rem 1.3rem 1.3rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-3) var(--ease-out), translate var(--dur-3) var(--ease-out);
+}
+.tourcard.is-open { opacity: 1; translate: -50% 0; pointer-events: auto; }
+.tourcard__close {
+  position: absolute;
+  top: .55rem; right: .55rem;
+  width: 2rem; height: 2rem;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  color: var(--ink-soft);
+  transition: background-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
+}
+.tourcard__close:hover { background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--ink); }
+.tourcard__dots { display: flex; gap: .35rem; margin-bottom: .75rem; }
+.tourcard__dot { width: 6px; height: 6px; border-radius: 50%; background: var(--line); transition: background-color var(--dur-2) var(--ease), transform var(--dur-2) var(--ease); }
+.tourcard__dot.is-active { background: var(--accent); transform: scale(1.3); }
+.tourcard__eyebrow { font-size: .7rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); margin-bottom: .3rem; }
+.tourcard__title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 520; margin-bottom: .4rem; padding-right: 1.6rem; }
+.tourcard__body { font-size: .88rem; color: var(--ink-soft); }
+.tourcard__link {
+  display: inline-block; margin-top: .6rem;
+  font-size: .82rem; font-weight: 700; color: var(--accent);
+  text-decoration: underline; text-underline-offset: 2px;
+}
+.tourcard__nav { display: flex; gap: .6rem; margin-top: 1.1rem; }
+.tourcard__nav .btn { flex: 1; padding: .6rem 1rem; font-size: .86rem; }
+
+@media (max-width: 520px) {
+  .tourcard { padding: 1rem 1.1rem 1.1rem; }
+}
 
 /* --------------------------- hotspots -------------------------- */
 .hero__hotspots,
@@ -198,6 +306,7 @@
   transform: translate3d(calc(var(--px) * var(--depth, 6) * 1px), calc(var(--py) * var(--depth, 6) * 1px), 0);
 }
 .hero__hotspots { --depth: 8; }
+.hero[data-touring="true"] .hero__hotspots { pointer-events: none; }
 .hero__ambient { --depth: 14; z-index: 3; }
 .hero__motes { --depth: 22; z-index: 4; }
 
@@ -375,7 +484,7 @@
 }
 
 @media (max-width: 860px) {
-  .hero { min-height: auto; }
+  .hero__approach { height: 175vh; }
   .hero__stage { padding: 4rem 1rem 1.5rem; }
   .hero__scene { width: 94vw; }
   /* bigger touch targets on the cropped frame */
@@ -383,14 +492,20 @@
   .hotspot--homemade { left: 58%; top: 26%; width: 20%; height: 19%; }
   .hotspot--location  { left: 5%;  top: 57%; width: 32%; height: 19%; }
   .scrollcue { display: none; }
+  /* clear the fixed bottom nav bar */
+  .tourcard { bottom: calc(4.6rem + env(safe-area-inset-bottom)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* no scroll-driven "walk" — the booth is simply there, fully arrived */
+  .hero__approach { height: 100svh; }
+  .hero__stage { position: relative; }
+  .hero__approachbox { transform: none; filter: none; }
   .hero__scene, .hero__img { transition: none; }
   .cloud--a, .cloud--b, .cloud--c { animation: none; }
   .cloud--a { left: 8%; } .cloud--b { left: 68%; } .cloud--c { left: 40%; }
   .mote { display: none; }
   .hotspot__ring { animation: none; }
   .scrollcue__line { animation: none; }
-  .hero.is-camera .hero__scene { transform: none; }
+  .tour-cta, .tourcard, .hero__vignette { transition: none; }
 }

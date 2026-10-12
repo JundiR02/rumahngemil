@@ -51,50 +51,63 @@
 
   <main>
     <!-- ============================ HERO WORLD ============================ -->
+    <!-- hero__approach is a tall scroll track; hero__stage pins in place while
+         it scrolls past, so scrolling reads as "walking up to the booth". -->
     <section class="hero" id="ngemil" aria-label="Dunia Rumah Ngemil">
-      <div class="hero__stage" data-parallax-stage>
-        <div class="hero__lockup">
-          <p class="hero__eyebrow">Sidenreng, Rappang</p>
-          <h1 class="hero__title">Rumah Ngemil</h1>
-          <p class="hero__tagline">#semuaberawaldarirumah</p>
+      <div class="hero__approach" data-approach>
+        <div class="hero__stage" data-parallax-stage>
+          <div class="hero__lockup">
+            <p class="hero__eyebrow">Sidenreng, Rappang</p>
+            <h1 class="hero__title">Rumah Ngemil</h1>
+            <p class="hero__tagline">#semuaberawaldarirumah</p>
+          </div>
+
+          <div class="hero__approachbox" data-approachbox>
+            <div class="hero__scene" data-camera>
+              <div class="hero__frame">
+                <img class="hero__img" src="aset/hero.png" alt="Diorama kertas Rumah Ngemil: sebuah gerai camilan bertenda merah muda di antara pegunungan kertas, sungai berkelok, jembatan, rumah panggung, dan bunga-bunga di pedesaan Sidenreng, Rappang." width="1122" height="1402" decoding="async" fetchpriority="high" />
+              </div>
+
+              <!-- ambient decorative layer -->
+              <div class="hero__ambient" aria-hidden="true" data-parallax="14">
+                <span class="cloud cloud--a"></span>
+                <span class="cloud cloud--b"></span>
+                <span class="cloud cloud--c"></span>
+              </div>
+              <div class="hero__motes" aria-hidden="true" data-parallax="22"></div>
+
+              <!-- interaction hotspots layered over the illustration -->
+              <div class="hero__hotspots" data-parallax="8">
+                <button type="button" class="hotspot hotspot--outlet" data-hotspot="menu"
+                  aria-label="Lihat menu — buka gerai Rumah Ngemil">
+                  <span class="hotspot__ring" aria-hidden="true"></span>
+                  <span class="hotspot__label">Lihat menu</span>
+                </button>
+
+                <button type="button" class="hotspot hotspot--homemade" data-hotspot="story"
+                  aria-label="Fresh Homemade Happiness — baca cerita di balik Rumah Ngemil">
+                  <span class="hotspot__ring" aria-hidden="true"></span>
+                  <span class="hotspot__label">Cerita homemade</span>
+                </button>
+
+                <button type="button" class="hotspot hotspot--location" data-hotspot="location"
+                  aria-label="Sidenreng, Rappang — lihat lokasi dan jam buka rumah kami">
+                  <span class="hotspot__ring" aria-hidden="true"></span>
+                  <span class="hotspot__label">Lokasi kami</span>
+                </button>
+              </div>
+
+              <div class="hero__vignette" data-vignette aria-hidden="true"></div>
+            </div>
+          </div>
+
+          <p class="hero__hint" data-hero-hint>Gulir untuk mendekat ke booth kami</p>
+
+          <button type="button" class="tour-cta" data-start-tour aria-label="Mulai tur booth — jelajahi dengan dipandu">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20v-2a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4v2"/><circle cx="10" cy="7" r="3.2"/><path d="M15 4.5c1.6.4 2.8 1.9 2.8 3.6s-1.2 3.2-2.8 3.6"/><path d="M19 13.2c1.3.5 2 1.8 2 3.2v1.6"/></svg>
+            Mulai Tur Booth
+          </button>
         </div>
-
-        <div class="hero__scene" data-camera>
-          <div class="hero__frame">
-            <img class="hero__img" src="aset/hero.png" alt="Diorama kertas Rumah Ngemil: sebuah gerai camilan bertenda merah muda di antara pegunungan kertas, sungai berkelok, jembatan, rumah panggung, dan bunga-bunga di pedesaan Sidenreng, Rappang." width="1122" height="1402" decoding="async" fetchpriority="high" />
-          </div>
-
-          <!-- ambient decorative layer -->
-          <div class="hero__ambient" aria-hidden="true" data-parallax="14">
-            <span class="cloud cloud--a"></span>
-            <span class="cloud cloud--b"></span>
-            <span class="cloud cloud--c"></span>
-          </div>
-          <div class="hero__motes" aria-hidden="true" data-parallax="22"></div>
-
-          <!-- interaction hotspots layered over the illustration -->
-          <div class="hero__hotspots" data-parallax="8">
-            <button type="button" class="hotspot hotspot--outlet" data-hotspot="menu"
-              aria-label="Lihat menu — buka gerai Rumah Ngemil">
-              <span class="hotspot__ring" aria-hidden="true"></span>
-              <span class="hotspot__label">Lihat menu</span>
-            </button>
-
-            <button type="button" class="hotspot hotspot--homemade" data-hotspot="story"
-              aria-label="Fresh Homemade Happiness — baca cerita di balik Rumah Ngemil">
-              <span class="hotspot__ring" aria-hidden="true"></span>
-              <span class="hotspot__label">Cerita homemade</span>
-            </button>
-
-            <button type="button" class="hotspot hotspot--location" data-hotspot="location"
-              aria-label="Sidenreng, Rappang — lihat lokasi dan jam buka rumah kami">
-              <span class="hotspot__ring" aria-hidden="true"></span>
-              <span class="hotspot__label">Lokasi kami</span>
-            </button>
-          </div>
-        </div>
-
-        <p class="hero__hint" data-hero-hint>Ketuk gerai, papan tanda, atau seal di dalam ilustrasi untuk menjelajah.</p>
       </div>
 
       <a class="scrollcue" href="#cerita" aria-label="Gulir untuk masuk ke rumah">
