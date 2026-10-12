@@ -187,6 +187,10 @@
   will-change: transform;
   --px: 0; --py: 0;
 }
+/* lets a horizontal swipe step through the open tour (hero.js) without
+   taking over the vertical gesture the rest of the page still needs to
+   scroll — touch-action stays the browser default everywhere else */
+.hero[data-touring="true"] .hero__scene { touch-action: pan-y; }
 .hero__frame {
   position: relative;
   width: 100%;
@@ -200,7 +204,7 @@
   height: 100%;
   object-fit: cover;
   object-position: 50% 90%;
-  transform: translate3d(calc(var(--px) * 3px), calc(var(--py) * 3px), 0) scale(1.04);
+  transform: translate3d(calc(var(--px) * -3px), calc(var(--py) * -3px), 0) scale(1.04);
 }
 
 /* -------------------------- diorama layers -------------------------- */
@@ -209,8 +213,12 @@
    50% 90% crops ~326px of baked title off the top — see the comment
    above .hero__frame) so every layer lines up with the background
    exactly. --depth scales each one's share of the shared pointer
-   parallax (--px/--py, set in hero.js), so nearer objects drift a
-   little more than the mountains behind them. */
+   parallax (--px/--py, set in hero.js): it's signed, not just sized,
+   the same way real depth reads — background pieces (tower, palm,
+   bridge) drift a touch *against* the pointer while foreground pieces
+   (boat, the seated couple) drift *with* it and the most, so the scene
+   reads as layers at different depths rather than one flat photo
+   moving at different speeds. */
 .hero__layer {
   position: absolute;
   display: block;
@@ -218,19 +226,19 @@
   user-select: none;
   transform: translate3d(calc(var(--px, 0) * var(--depth, 6) * 1px), calc(var(--py, 0) * var(--depth, 6) * 1px), 0);
 }
-.hero__layer--tower    { left: 16.04%; top: 7.33%;  width: 8.38%;  height: 38.27%; --depth: 3; }
-.hero__layer--palm     { left: 1.16%;  top: 13.39%; width: 17.20%; height: 21.44%; --depth: 4; }
-.hero__layer--bridge   { left: 71.12%; top: 41.27%; width: 22.37%; height: 8.75%;  --depth: 4; }
-.hero__layer--house    { left: 84.58%; top: 51.27%; width: 13.90%; height: 17.69%; --depth: 5; }
-.hero__layer--tent     { left: 29.86%; top: 12.52%; width: 39.39%; height: 48.75%; --depth: 7; }
-.hero__layer--banner   { left: 24.33%; top: 30.21%; width: 10.16%; height: 30.67%; --depth: 8; }
-.hero__layer--sign     { left: 63.01%; top: 32.33%; width: 10.43%; height: 11.54%; --depth: 8; }
-.hero__layer--table    { left: 33.33%; top: 59.25%; width: 30.48%; height: 13.75%; --depth: 10; }
-.hero__layer--signwood { left: 11.85%; top: 62.04%; width: 18.54%; height: 17.31%; --depth: 11; }
-.hero__layer--seated   { left: 77.81%; top: 72.52%; width: 16.04%; height: 15.19%; --depth: 10; }
-.hero__layer--man      { left: 43.23%; top: 72.42%; width: 5.70%;  height: 11.54%; --depth: 11; }
-.hero__layer--woman    { left: 63.82%; top: 68.10%; width: 5.44%;  height: 10.96%; --depth: 11; }
-.hero__layer--boat     { left: 18.54%; top: 87.62%; width: 19.25%; height: 9.81%;  --depth: 13; }
+.hero__layer--tower    { left: 16.04%; top: 7.33%;  width: 8.38%;  height: 38.27%; --depth: -3; }
+.hero__layer--palm     { left: 1.16%;  top: 13.39%; width: 17.20%; height: 21.44%; --depth: -2; }
+.hero__layer--bridge   { left: 71.12%; top: 41.27%; width: 22.37%; height: 8.75%;  --depth: -2; }
+.hero__layer--house    { left: 84.58%; top: 51.27%; width: 13.90%; height: 17.69%; --depth: -1; }
+.hero__layer--tent     { left: 29.86%; top: 12.52%; width: 39.39%; height: 48.75%; --depth: 3; }
+.hero__layer--banner   { left: 24.33%; top: 30.21%; width: 10.16%; height: 30.67%; --depth: 5; }
+.hero__layer--sign     { left: 63.01%; top: 32.33%; width: 10.43%; height: 11.54%; --depth: 5; }
+.hero__layer--table    { left: 33.33%; top: 59.25%; width: 30.48%; height: 13.75%; --depth: 8; }
+.hero__layer--signwood { left: 11.85%; top: 62.04%; width: 18.54%; height: 17.31%; --depth: 10; }
+.hero__layer--seated   { left: 77.81%; top: 72.52%; width: 16.04%; height: 15.19%; --depth: 8; }
+.hero__layer--man      { left: 43.23%; top: 72.42%; width: 5.70%;  height: 11.54%; --depth: 10; }
+.hero__layer--woman    { left: 63.82%; top: 68.10%; width: 5.44%;  height: 10.96%; --depth: 10; }
+.hero__layer--boat     { left: 18.54%; top: 87.62%; width: 19.25%; height: 9.81%;  --depth: 14; }
 
 /* pan/zoom toward a point — driven by RN.hero.panTo(), used by both the
    "lihat menu" hotspot and the guided tour */
@@ -400,6 +408,7 @@
 
 /* --------------------------- hotspots -------------------------- */
 .hero__hotspots,
+.hero__pins,
 .hero__ambient,
 .hero__motes {
   position: absolute;
@@ -410,8 +419,32 @@
 }
 .hero__hotspots { --depth: 8; }
 .hero[data-touring="true"] .hero__hotspots { pointer-events: none; }
+.hero__pins { --depth: 8; z-index: 5; }
 .hero__ambient { --depth: 14; z-index: 3; }
 .hero__motes { --depth: 22; z-index: 4; }
+
+/* numbered shortcuts (1–6) straight into the tour, one per stop —
+   hidden while the tour card itself is open */
+.hero[data-touring="true"] .hero__pins { opacity: 0; pointer-events: none; }
+.pin {
+  position: absolute;
+  translate: -50% -50%;
+  width: 1.6rem;
+  height: 1.6rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--paper-2);
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  font-size: .72rem;
+  font-weight: 800;
+  pointer-events: auto;
+  box-shadow: var(--sh-2);
+  transition: opacity var(--dur-2) var(--ease), transform var(--dur-2) var(--ease-out), background-color var(--dur-1) var(--ease);
+}
+.pin:hover,
+.pin:focus-visible { background: var(--accent); color: var(--accent-ink); transform: translate(-50%, -50%) scale(1.14); }
 
 .hotspot {
   position: absolute;

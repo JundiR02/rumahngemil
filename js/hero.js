@@ -21,6 +21,7 @@ RN.hero = (function () {
   const approachbox = document.querySelector("[data-approachbox]");
   const scene = document.querySelector("[data-camera]");
   const motesBox = document.querySelector(".hero__motes");
+  const pinsBox = document.querySelector("[data-pins]");
   const hint = document.querySelector("[data-hero-hint]");
   const tourCta = document.querySelector("[data-start-tour]");
 
@@ -30,9 +31,9 @@ RN.hero = (function () {
   // pan targets, matched to each layer's own box in hero.css (.hero__layer--*)
   const HOME = { origin: "47% 42%", scale: 1 };
   const POINTS = {
-    outlet: { origin: "49.5% 36.9%", scale: 1.3 },   // centered on the whole tent (.hero__layer--tent)
-    homemade: { origin: "68.2% 38.4%", scale: 1.6 }, // the round seal (.hero__layer--sign)
-    location: { origin: "21.4% 70.8%", scale: 1.45 }, // the wooden sign (.hero__layer--signwood)
+    outlet: { origin: "49.5% 36.9%", scale: 1.8 },    // centered on the whole tent (.hero__layer--tent)
+    homemade: { origin: "68.2% 38.4%", scale: 2.3 },  // the round seal (.hero__layer--sign)
+    location: { origin: "21.4% 70.8%", scale: 2.0 },  // the wooden sign (.hero__layer--signwood)
   };
 
   // the 6 stops below mirror a standalone diorama prototype (same source
@@ -40,12 +41,21 @@ RN.hero = (function () {
   // points converted from its pixel coordinates into this scene's origin%.
   const TOUR_STEPS = [
     { title: "Papan Lokasi", body: "Papan kayu Sidenreng, Rappang menyambut di pintu masuk. Dari rumah kami, untuk dibagi ke kamu.", point: POINTS.location, link: { label: "Lihat peta & jam buka", panel: "location" } },
-    { title: "Banner Teman Ngemil", body: "Camilan favorit terpampang di banner. Lihat pilihannya, lalu melangkah ke meja.", point: { origin: "29.4% 45.6%", scale: 1.3 } },
-    { title: "Papan Menu & Rak", body: "Papan menu di kiri dan kanan, toples berjajar di rak. Dipanggang dalam batch kecil setiap pagi dan dibungkus dengan tangan.", point: { origin: "49.5% 39.4%", scale: 1.5 } },
-    { title: "Meja Kasir", body: "Pesan dan bayar di meja krem berlogo Rumah Ngemil, tempat cookies, cake, pastry, dan minuman disajikan.", point: { origin: "49.6% 53.8%", scale: 1.4 } },
+    { title: "Banner Teman Ngemil", body: "Camilan favorit terpampang di banner. Lihat pilihannya, lalu melangkah ke meja.", point: { origin: "29.4% 45.6%", scale: 1.8 } },
+    { title: "Papan Menu & Rak", body: "Papan menu di kiri dan kanan, toples berjajar di rak. Dipanggang dalam batch kecil setiap pagi dan dibungkus dengan tangan.", point: { origin: "49.5% 39.4%", scale: 2.1 } },
+    { title: "Meja Kasir", body: "Pesan dan bayar di meja krem berlogo Rumah Ngemil, tempat cookies, cake, pastry, dan minuman disajikan.", point: { origin: "49.6% 53.8%", scale: 1.9 } },
     { title: "Fresh Homemade Happiness", body: "Papan bulat ini merangkum janji kami: segar, buatan rumah, dan bikin senang.", point: POINTS.homemade, link: { label: "Baca cerita lengkap", panel: "story" } },
-    { title: "Meja & Kursi Lipat", body: "Meja dan kursi lipat menunggu di depan tenda. Ngemil bareng, lalu bagi ke orang tersayang.", point: HOME, final: true },
+    // pans home (overview) for a "there, you've seen it all" close, so
+    // pinOrigin keeps the marker on the actual table/chairs instead of
+    // sitting on top of pin 3's — they'd otherwise land right on top of
+    // each other since both steps 3 and 6 are near the tent's center
+    { title: "Meja & Kursi Lipat", body: "Meja dan kursi lipat menunggu di depan tenda. Ngemil bareng, lalu bagi ke orang tersayang.", point: HOME, pinOrigin: "48.6% 66%", final: true },
   ];
+
+  // numbered pins (1–6), one per tour stop, shown directly on the
+  // illustration so a visitor can jump straight into any step —
+  // mirrors the reference prototype's numbered spots
+  const PINS = TOUR_STEPS.map((s, i) => ({ n: i + 1, label: s.title, origin: s.pinOrigin || s.point.origin }));
 
   function reduced() { return !!(RN.motion && RN.motion.reduced); }
   function clamp(n, a, b) { return Math.max(a, Math.min(b, n)); }
@@ -143,6 +153,47 @@ RN.hero = (function () {
     });
   }
 
+  /* ----------------------------- pins ----------------------------- */
+  /* numbered markers (1–6), one per tour stop, right on the illustration
+     — a shortcut into any step without walking the whole sequence first */
+  function spawnPins() {
+    if (!pinsBox) return;
+    PINS.forEach((p) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "pin";
+      btn.textContent = String(p.n);
+      btn.setAttribute("aria-label", `Langkah ${p.n}: ${p.label}`);
+      const [left, top] = p.origin.split(" ");
+      btn.style.left = left;
+      btn.style.top = top;
+      btn.addEventListener("click", () => startTour(p.n - 1));
+      pinsBox.appendChild(btn);
+    });
+  }
+
+  /* -------------------------- swipe (touring) --------------------- */
+  /* horizontal swipe steps through the tour while it's open; vertical
+     page scroll stays native (touch-action: pan-y, set only while
+     data-touring="true") so this never fights scrolling the rest of
+     the page the way it would if touch-action were disabled outright */
+  function wireSwipe() {
+    let sx = 0, sy = 0, tracking = false;
+    scene.addEventListener("pointerdown", (e) => {
+      if (!touring || e.pointerType === "mouse") return;
+      sx = e.clientX; sy = e.clientY; tracking = true;
+    }, { passive: true });
+    scene.addEventListener("pointerup", (e) => {
+      if (!tracking) return;
+      tracking = false;
+      const dx = e.clientX - sx, dy = e.clientY - sy;
+      if (Math.abs(dx) > 50 && Math.abs(dy) < 70) {
+        if (dx < 0) nextStep(); else prevStep();
+      }
+    }, { passive: true });
+    scene.addEventListener("pointercancel", () => { tracking = false; }, { passive: true });
+  }
+
   /* --------------------------- hint fade ------------------------- */
   function wireHintFade() {
     if (!hint) return;
@@ -238,10 +289,10 @@ RN.hero = (function () {
     else if (e.key === "ArrowLeft") { e.preventDefault(); prevStep(); }
   }
 
-  function startTour() {
+  function startTour(index) {
     if (touring || !hero) return;
     touring = true;
-    tourIndex = 0;
+    tourIndex = clamp(index || 0, 0, TOUR_STEPS.length - 1);
     hero.dataset.touring = "true";
     ensureTourCard();
     renderStep();
@@ -267,6 +318,8 @@ RN.hero = (function () {
     wireHotspots();
     wireHintFade();
     spawnMotes();
+    spawnPins();
+    wireSwipe();
 
     if (reduced()) {
       if (tourCta) tourCta.classList.add("is-visible");
@@ -279,7 +332,7 @@ RN.hero = (function () {
       updateApproach();
     }
 
-    if (tourCta) tourCta.addEventListener("click", startTour);
+    if (tourCta) tourCta.addEventListener("click", () => startTour());
   }
 
   return { init, camera, panTo: (origin, scale) => panTo({ origin, scale }), panHome, startTour, endTour };
