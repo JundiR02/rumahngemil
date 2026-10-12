@@ -201,12 +201,41 @@
   object-fit: cover;
   object-position: 50% 90%;
   transform: translate3d(calc(var(--px) * 3px), calc(var(--py) * 3px), 0) scale(1.04);
-  transition: filter .5s var(--ease);
 }
+
+/* -------------------------- diorama layers -------------------------- */
+/* the 13 foreground cutouts, positioned as percentages of the same
+   1122×1040 cropped window the base background uses (object-position
+   50% 90% crops ~326px of baked title off the top — see the comment
+   above .hero__frame) so every layer lines up with the background
+   exactly. --depth scales each one's share of the shared pointer
+   parallax (--px/--py, set in hero.js), so nearer objects drift a
+   little more than the mountains behind them. */
+.hero__layer {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  transform: translate3d(calc(var(--px, 0) * var(--depth, 6) * 1px), calc(var(--py, 0) * var(--depth, 6) * 1px), 0);
+}
+.hero__layer--tower    { left: 16.04%; top: 7.33%;  width: 8.38%;  height: 38.27%; --depth: 3; }
+.hero__layer--palm     { left: 1.16%;  top: 13.39%; width: 17.20%; height: 21.44%; --depth: 4; }
+.hero__layer--bridge   { left: 71.12%; top: 41.27%; width: 22.37%; height: 8.75%;  --depth: 4; }
+.hero__layer--house    { left: 84.58%; top: 51.27%; width: 13.90%; height: 17.69%; --depth: 5; }
+.hero__layer--tent     { left: 29.86%; top: 12.52%; width: 39.39%; height: 48.75%; --depth: 7; }
+.hero__layer--banner   { left: 24.33%; top: 30.21%; width: 10.16%; height: 30.67%; --depth: 8; }
+.hero__layer--sign     { left: 63.01%; top: 32.33%; width: 10.43%; height: 11.54%; --depth: 8; }
+.hero__layer--table    { left: 33.33%; top: 59.25%; width: 30.48%; height: 13.75%; --depth: 10; }
+.hero__layer--signwood { left: 11.85%; top: 62.04%; width: 18.54%; height: 17.31%; --depth: 11; }
+.hero__layer--seated   { left: 77.81%; top: 72.52%; width: 16.04%; height: 15.19%; --depth: 10; }
+.hero__layer--man      { left: 43.23%; top: 72.42%; width: 5.70%;  height: 11.54%; --depth: 11; }
+.hero__layer--woman    { left: 63.82%; top: 68.10%; width: 5.44%;  height: 10.96%; --depth: 11; }
+.hero__layer--boat     { left: 18.54%; top: 87.62%; width: 19.25%; height: 9.81%;  --depth: 13; }
 
 /* pan/zoom toward a point — driven by RN.hero.panTo(), used by both the
    "lihat menu" hotspot and the guided tour */
-.hero[data-zoomed="true"] .hero__img { filter: saturate(.94) brightness(.97); }
+.hero__frame img { transition: filter .5s var(--ease); }
+.hero[data-zoomed="true"] .hero__frame img { filter: saturate(.94) brightness(.97); }
 
 /* dims the rest of the scene so the panned-to point reads as the focus */
 .hero__vignette {
@@ -308,6 +337,11 @@
   font-size: .82rem; font-weight: 700; color: var(--accent);
   text-decoration: underline; text-underline-offset: 2px;
 }
+/* the unconditional display:inline-block above has the same specificity
+   as the UA stylesheet's [hidden]{display:none} and author rules always
+   win that tie, so steps without a link kept showing the previous step's
+   link text — this explicit override (higher specificity) restores it */
+.tourcard__link[hidden] { display: none; }
 
 /* ------------------------- tour card: mini map ---------------------- */
 /* a small schematic of the booth frame, echoing the real hotspot
@@ -334,9 +368,9 @@
   border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent);
   background: color-mix(in srgb, var(--accent) 10%, transparent);
 }
-.tourcard__map-zone--outlet   { left: 29%; top: 14%; width: 37%; height: 40%; border-radius: var(--r-1); }
-.tourcard__map-zone--homemade { left: 61%; top: 27%; width: 14%; height: 17%; border-radius: 50%; }
-.tourcard__map-zone--location  { left: 8%;  top: 58%; width: 25%; height: 18%; border-radius: var(--r-1); }
+.tourcard__map-zone--outlet   { left: 29.86%; top: 12.52%; width: 39.39%; height: 48.75%; border-radius: var(--r-1); }
+.tourcard__map-zone--homemade { left: 63.01%; top: 32.33%; width: 10.43%; height: 11.54%; border-radius: 50%; }
+.tourcard__map-zone--location  { left: 11.85%; top: 62.04%; width: 18.54%; height: 17.31%; border-radius: var(--r-1); }
 .tourcard__map-dot {
   position: absolute;
   width: 14px; height: 14px;
@@ -460,11 +494,13 @@
 .hotspot:hover .hotspot__label,
 .hotspot:focus-visible .hotspot__label { opacity: 1; translate: -50% 0; }
 
-/* positioned over key objects in the cropped frame (top ~23% of the
-   source art is cropped away, so these differ from raw-image percents) */
-.hotspot--outlet   { left: 29%;  top: 14%;  width: 37%; height: 40%; }
-.hotspot--homemade { left: 61%;  top: 27%;  width: 14%; height: 17%; border-radius: 50%; }
-.hotspot--location  { left: 8%;  top: 58%;  width: 25%; height: 18%; border-radius: var(--r-1); }
+/* positioned over key objects in the cropped frame, matching the real
+   layer boxes in .hero__layer above (the hotspots sit over the base
+   tent/sign/sign_wood art, just with a transparent clickable button on
+   top rather than being the image layer itself) */
+.hotspot--outlet   { left: 29.86%; top: 12.52%; width: 39.39%; height: 48.75%; }
+.hotspot--homemade { left: 63.01%; top: 32.33%; width: 10.43%; height: 11.54%; border-radius: 50%; }
+.hotspot--location  { left: 11.85%; top: 62.04%; width: 18.54%; height: 17.31%; border-radius: var(--r-1); }
 
 
 /* --------------------------- clouds --------------------------- */
@@ -562,9 +598,9 @@
   .hero__stage { padding: 4rem 1rem 1.5rem; }
   .hero__scene { width: 94vw; }
   /* bigger touch targets on the cropped frame */
-  .hotspot--outlet   { left: 26%; top: 13%; width: 45%; height: 42%; }
-  .hotspot--homemade { left: 58%; top: 26%; width: 20%; height: 19%; }
-  .hotspot--location  { left: 5%;  top: 57%; width: 32%; height: 19%; }
+  .hotspot--outlet   { left: 27%; top: 11%; width: 47%; height: 51%; }
+  .hotspot--homemade { left: 60%; top: 31%; width: 16%; height: 14%; }
+  .hotspot--location  { left: 9%;  top: 61%; width: 26%; height: 18%; }
   .scrollcue { display: none; }
   /* clear the fixed bottom nav bar */
   .tourcard { bottom: calc(4.6rem + env(safe-area-inset-bottom)); }
@@ -575,7 +611,8 @@
   .hero__approach { height: 100svh; }
   .hero__stage { position: relative; }
   .hero__approachbox { transform: none; filter: none; }
-  .hero__scene, .hero__img { transition: none; }
+  .hero__scene, .hero__frame img { transition: none; }
+  .hero__layer { transform: none; }
   .cloud--a, .cloud--b, .cloud--c { animation: none; }
   .cloud--a { left: 8%; } .cloud--b { left: 68%; } .cloud--c { left: 40%; }
   .mote { display: none; }

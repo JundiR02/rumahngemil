@@ -27,20 +27,24 @@ RN.hero = (function () {
   const HINT_WALK = "Gulir untuk mendekat ke booth kami";
   const HINT_EXPLORE = "Ketuk gerai, papan tanda, atau seal di dalam ilustrasi untuk menjelajah.";
 
-  // pan targets, matched to the hotspot positions in hero.css
+  // pan targets, matched to each layer's own box in hero.css (.hero__layer--*)
   const HOME = { origin: "47% 42%", scale: 1 };
   const POINTS = {
-    outlet: { origin: "47.5% 34%", scale: 1.3 },
-    homemade: { origin: "68% 35.5%", scale: 1.55 },
-    location: { origin: "20.5% 67%", scale: 1.5 },
+    outlet: { origin: "49.5% 36.9%", scale: 1.3 },   // centered on the whole tent (.hero__layer--tent)
+    homemade: { origin: "68.2% 38.4%", scale: 1.6 }, // the round seal (.hero__layer--sign)
+    location: { origin: "21.4% 70.8%", scale: 1.45 }, // the wooden sign (.hero__layer--signwood)
   };
 
+  // the 6 stops below mirror a standalone diorama prototype (same source
+  // artwork, cut into layers) — titles/copy kept as written there, camera
+  // points converted from its pixel coordinates into this scene's origin%.
   const TOUR_STEPS = [
-    { title: "Selamat datang di booth kami", body: "Yuk, jalan-jalan dulu sebelum pesan — kami tunjukkan sekelilingnya.", point: HOME },
-    { title: "Gerai Kami", body: "Semua camilan dipajang dan disiapkan langsung di sini, segar tiap hari.", point: POINTS.outlet },
-    { title: "Fresh Homemade Happiness", body: "Kenapa kami selalu bikin sendiri dari rumah — bukan dari pabrik.", point: POINTS.homemade, link: { label: "Baca cerita lengkap", panel: "story" } },
-    { title: "Sidenreng, Rappang", body: "Dari sinilah semua camilan ini berasal.", point: POINTS.location, link: { label: "Lihat peta & jam buka", panel: "location" } },
-    { title: "Sudah siap jajan?", body: "Buka menu lengkap, atau lanjut jelajah sendiri bagian booth lainnya.", point: HOME, final: true },
+    { title: "Papan Lokasi", body: "Papan kayu Sidenreng, Rappang menyambut di pintu masuk. Dari rumah kami, untuk dibagi ke kamu.", point: POINTS.location, link: { label: "Lihat peta & jam buka", panel: "location" } },
+    { title: "Banner Teman Ngemil", body: "Camilan favorit terpampang di banner. Lihat pilihannya, lalu melangkah ke meja.", point: { origin: "29.4% 45.6%", scale: 1.3 } },
+    { title: "Papan Menu & Rak", body: "Papan menu di kiri dan kanan, toples berjajar di rak. Dipanggang dalam batch kecil setiap pagi dan dibungkus dengan tangan.", point: { origin: "49.5% 39.4%", scale: 1.5 } },
+    { title: "Meja Kasir", body: "Pesan dan bayar di meja krem berlogo Rumah Ngemil, tempat cookies, cake, pastry, dan minuman disajikan.", point: { origin: "49.6% 53.8%", scale: 1.4 } },
+    { title: "Fresh Homemade Happiness", body: "Papan bulat ini merangkum janji kami: segar, buatan rumah, dan bikin senang.", point: POINTS.homemade, link: { label: "Baca cerita lengkap", panel: "story" } },
+    { title: "Meja & Kursi Lipat", body: "Meja dan kursi lipat menunggu di depan tenda. Ngemil bareng, lalu bagi ke orang tersayang.", point: HOME, final: true },
   ];
 
   function reduced() { return !!(RN.motion && RN.motion.reduced); }
