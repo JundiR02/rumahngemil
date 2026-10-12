@@ -156,21 +156,31 @@
    a point" (tour/hotspot-driven, on .hero__scene below) never fight
    over the same transform */
 .hero__approachbox {
+  /* the "far away" floor used to be .58 — on wide, short desktop windows
+     that left the booth looking lost in a sea of empty cream before the
+     visitor scrolled. Keeping the box closer to full size from the start
+     trades some of the walk-up drama for a page that reads clearly at
+     rest, which matters more since this is what most desktop visitors
+     see first. */
   transform:
-    scale(calc(.58 + .42 * var(--approach, 1)))
-    translateY(calc(36px * (1 - var(--approach, 1))));
+    scale(calc(.82 + .18 * var(--approach, 1)))
+    translateY(calc(18px * (1 - var(--approach, 1))));
   filter:
-    saturate(calc(72% + 28% * var(--approach, 1)))
-    brightness(calc(95% + 5% * var(--approach, 1)));
+    saturate(calc(88% + 12% * var(--approach, 1)))
+    brightness(calc(98% + 2% * var(--approach, 1)));
   will-change: transform;
 }
 
 /* ----------------------------- scene --------------------------- */
 /* the illustration sits below the wordmark; the frame crops the
-   flattened title band off the top so it never clashes with ours */
+   flattened title band off the top so it never clashes with ours.
+   container-type scopes the cqw unit below (cloud drift) to this box's
+   own width instead of the full viewport, so clouds stay visually tied
+   to the illustration regardless of how wide the browser window is. */
 .hero__scene {
   position: relative;
   width: min(92vw, 50rem, calc(52svh * 1.079));
+  container-type: inline-size;
   transform-origin: 47% 42%;
   transform: scale(var(--tour-scale, 1));
   transition: transform .7s var(--ease-out), transform-origin .7s var(--ease-out);
@@ -495,8 +505,13 @@
 .cloud--c::before { width: 74px; height: 74px; top: -30px; left: 22px; }
 .cloud--c::after  { width: 54px; height: 54px; top: -20px; left: 74px; }
 
-@keyframes drift-a { to { transform: translateX(145vw); } }
-@keyframes drift-b { to { transform: translateX(140vw); } }
+/* cqw = % of .hero__scene's own width (set via container-type above),
+   not the browser viewport — without this, clouds drifted using the
+   page's full width and ended up far from the (much narrower) booth
+   illustration on wide desktop windows. Falls back to no animation in
+   browsers without container query units, which is a safe no-op. */
+@keyframes drift-a { to { transform: translateX(145cqw); } }
+@keyframes drift-b { to { transform: translateX(140cqw); } }
 
 /* ---------------------------- motes -------------------------- */
 .mote {
