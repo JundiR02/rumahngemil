@@ -113,14 +113,21 @@
   height: 100%;
 }
 
-/* the diorama now fills the whole tab edge to edge (see .hero__scene
-   below) instead of sitting in a small boxed card with the title/hint/
-   button stacked around it — those float as overlays on top of the
-   image instead, so .hero__stage is just a plain positioned container,
-   not a flex row competing with the image for height */
+/* the diorama fills the whole tab (see .hero__scene below) instead of
+   sitting in a small boxed card, with the title/hint/button floating
+   as overlays on top of it. The tour card is different: it's a real
+   stacked zone below the image (flex column), not an overlay on top
+   of it, because the artwork is cut into separate layer pieces a
+   visitor needs to actually see to follow what the step is pointing
+   at — .hero__approachbox (the image) is flex:1 so it shrinks to make
+   room whenever the tour card (appended after it, see hero.js) is
+   present, instead of the card covering the art */
 .hero__stage {
   position: relative;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 /* ---------------------------- lockup ---------------------------- */
@@ -183,17 +190,24 @@
    a point" (tour/hotspot-driven, on .hero__scene below) never fight
    over the same transform */
 .hero__approachbox {
-  /* fills the whole stage and flex-centers the scene inside it, both
-     axes — the scene itself is full width (see .hero__scene) and
-     whatever height its fixed aspect-ratio works out to, so this is
-     what actually centers it vertically when that's shorter than the
-     tab's own height */
-  position: absolute;
-  inset: 0;
+  /* the flexible zone above the tour card (if any) — shrinks to
+     whatever height is left once the card below claims its own
+     space, and flex-centers the scene inside whatever that turns out
+     to be (.hero__scene below fits itself to this box on both axes) */
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
   z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  /* exposes this box's own actual (post-flex-shrink) height to
+     .hero__scene below as cqh units — flex already gives this box a
+     definite size independent of its content, so container-type:size
+     doesn't change anything about its layout, just makes that size
+     queryable */
+  container-type: size;
   /* the "far away" floor used to be .58 — on wide, short desktop windows
      that left the booth looking lost in a sea of empty cream before the
      visitor scrolled. Keeping the box closer to full size from the start
@@ -217,15 +231,19 @@
    to the illustration regardless of how wide the browser window is. */
 .hero__scene {
   position: relative;
-  /* full width of the tab, edge to edge — % here (not vw) so it stays
-     sized to the app shell's own card width, not the full browser
-     viewport, which would spill it out past the ~480px-wide card on
-     desktop. Height follows from .hero__frame's fixed aspect-ratio
-     below (that ratio has to stay fixed for the 13 layer cutouts'
-     percentage positions to line up with the base art — it can't just
-     stretch to fill the tab's full height too, which is usually much
-     taller than this nearly-square frame) */
-  width: min(100%, 50rem);
+  /* an explicit width (not auto+aspect-ratio — .hero__frame's own
+     children are all position:absolute, so it has no real intrinsic
+     content to size itself from, and auto-sizing against an
+     aspect-ratio falls apart into a 0-width circular mess without one)
+     that's whichever is smaller: the box's full width, a desktop cap,
+     or — new — a term in cqh (height units of .hero__approachbox,
+     queryable because of container-type:size set there) so the frame
+     shrinks by height instead of overflowing once the tour card below
+     claims some of the vertical space. Plain % + max-height had this
+     same job before the tour card existed, but % can't express "100%
+     of my own parent's height" the way cqh can; vh/svh can't either,
+     since those mean the full viewport, not this shrinkable box */
+  width: min(100%, 50rem, calc(100cqh * 1.0788));
   container-type: inline-size;
   transform-origin: 47% 42%;
   transform: scale(var(--tour-scale, 1));
@@ -359,23 +377,26 @@
 .tour-cta:active { transform: translateY(0) scale(.96); }
 
 /* ------------------------------ tour card -------------------------- */
+/* a real stacked zone below the image (hero.js appends it as the
+   second child of the flex-column .hero__stage, after
+   .hero__approachbox) rather than a card floating on top of it, so it
+   never covers the art — a bottom sheet, not an overlay */
 .tourcard {
-  position: absolute;
-  left: 50%;
-  bottom: clamp(1rem, 4vh, 2.5rem);
-  translate: -50% 12px;
+  position: relative;
+  flex: none;
   z-index: 10;
-  width: min(420px, 90vw);
+  width: 100%;
   background: var(--paper-2);
-  border: 1px solid var(--line);
-  border-radius: var(--r-3);
-  box-shadow: var(--sh-lift);
-  padding: 1.2rem 1.3rem 1.3rem;
+  border-top: 1px solid var(--line);
+  border-radius: var(--r-3) var(--r-3) 0 0;
+  box-shadow: 0 -10px 24px -8px rgba(58, 42, 27, .18);
+  padding: 1.1rem 1.25rem calc(1.1rem + env(safe-area-inset-bottom));
   opacity: 0;
+  transform: translateY(18px);
   pointer-events: none;
-  transition: opacity var(--dur-3) var(--ease-out), translate var(--dur-3) var(--ease-out);
+  transition: opacity var(--dur-3) var(--ease-out), transform var(--dur-3) var(--ease-out);
 }
-.tourcard.is-open { opacity: 1; translate: -50% 0; pointer-events: auto; }
+.tourcard.is-open { opacity: 1; transform: translateY(0); pointer-events: auto; }
 .tourcard__close {
   position: absolute;
   top: .55rem; right: .55rem;
@@ -463,7 +484,7 @@
 }
 
 @media (max-width: 520px) {
-  .tourcard { padding: 1rem 1.1rem 1.1rem; }
+  .tourcard { padding: 1rem 1.1rem calc(1rem + env(safe-area-inset-bottom)); }
   .tourcard__map { max-width: 150px; }
   .tourcard__maplabel { margin-top: .75rem; font-size: .68rem; }
 }
