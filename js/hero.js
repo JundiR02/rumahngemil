@@ -138,17 +138,18 @@ RN.hero = (function () {
   function camera(on) { panTo(on ? POINTS.outlet : HOME); }
 
   /* -------------------------- hotspots -------------------------- */
+  // hotspot kind -> which tab it should open (the "menu"/"story"/"location"
+  // panels they used to open now duplicate the Pesanan/Tentang/Rumah tabs,
+  // so these jump to the tab instead of layering a panel on top of it)
+  const HOTSPOT_TAB = { menu: "pesanan", story: "tentang", location: "rumah" };
+
   function wireHotspots() {
     document.querySelectorAll("[data-hotspot]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const kind = btn.dataset.hotspot; // menu | story | location
-        if (kind === "menu") {
-          panTo(POINTS.outlet);
-          const delay = reduced() ? 0 : 500;
-          setTimeout(() => RN.panel.open("menu", { category: "cookies" }), delay);
-        } else {
-          RN.panel.open(kind);
-        }
+        if (kind === "menu") panTo(POINTS.outlet);
+        const delay = kind === "menu" && !reduced() ? 500 : 0;
+        setTimeout(() => { if (RN.tabs) RN.tabs.show(HOTSPOT_TAB[kind] || kind); }, delay);
       });
     });
   }
@@ -259,7 +260,7 @@ RN.hero = (function () {
     if (step.link) {
       linkEl.hidden = false;
       linkEl.textContent = step.link.label + " →";
-      linkEl.onclick = (e) => { e.preventDefault(); endTour(false); RN.panel.open(step.link.panel); };
+      linkEl.onclick = (e) => { e.preventDefault(); endTour(false); if (RN.tabs) RN.tabs.show(HOTSPOT_TAB[step.link.panel] || step.link.panel); };
     } else {
       linkEl.hidden = true;
       linkEl.onclick = null;
@@ -273,7 +274,7 @@ RN.hero = (function () {
     else if (step.final) { backBtn.textContent = "Selesai"; backBtn.onclick = () => endTour(); }
     else { backBtn.textContent = "Kembali"; backBtn.onclick = prevStep; }
 
-    if (step.final) { nextBtn.textContent = "Buka Menu"; nextBtn.onclick = () => { endTour(false); RN.panel.open("menu"); }; }
+    if (step.final) { nextBtn.textContent = "Buka Menu"; nextBtn.onclick = () => { endTour(false); if (RN.tabs) RN.tabs.show("pesanan"); }; }
     else { nextBtn.textContent = "Lanjut"; nextBtn.onclick = nextStep; }
 
     if (RN.live) RN.live(`Langkah ${tourIndex + 1} dari ${TOUR_STEPS.length}: ${step.title}`);

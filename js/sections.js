@@ -80,7 +80,10 @@ RN.sections = (function () {
   }
 
   /* ------------------ nav: active link + auto-hide -------------- */
+  /* the worldnav this drove was replaced by the app shell's bottom tab
+     bar (js/tabs.js) — bail out if it's not in the page */
   function nav() {
+    if (!document.querySelector(".worldnav")) return;
     const links = [...document.querySelectorAll(".worldnav__list a[data-nav]")];
     const map = new Map();
     links.forEach((a) => {

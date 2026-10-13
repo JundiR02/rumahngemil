@@ -98,29 +98,44 @@
   isolation: isolate;
   background: var(--cream);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
-/* a tall scroll track: hero__stage pins in place while it scrolls past,
-   so scrolling the page reads as "walking up to the booth" */
+/* used to be a tall scroll track — hero__stage pinned in place while it
+   scrolled past, so scrolling read as "walking up to the booth". The
+   app shell has no page scroll any more (the Ngemil tab just fills its
+   view), so this now simply fills its parent instead of over-running it */
 .hero__approach {
   position: relative;
-  height: 230vh;
+  height: 100%;
 }
 
 .hero__stage {
-  position: sticky;
-  top: 0;
-  height: 100svh;
+  position: relative;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(1rem, 2.6vh, 1.8rem);
-  padding: clamp(4.5rem, 9vh, 6rem) 1rem 1.25rem;
+  gap: clamp(.75rem, 2.4vh, 1.5rem);
+  padding: clamp(.75rem, 2vh, 1.25rem) 1rem 1rem;
 }
 
 /* ---------------------------- lockup ---------------------------- */
-.hero__lockup { text-align: center; max-width: 92vw; }
+/* collapses to nothing while the tour is open, to give the tour card
+   room inside the shell's limited height — same move the reference
+   diorama prototype makes with its own header */
+.hero__lockup {
+  text-align: center;
+  max-width: 92%;
+  max-height: 220px;
+  overflow: hidden;
+  transition: max-height var(--dur-3) var(--ease), opacity var(--dur-2) var(--ease);
+}
+.hero[data-touring="true"] .hero__lockup { max-height: 0; opacity: 0; pointer-events: none; }
 .hero__eyebrow {
   font-size: .74rem;
   font-weight: 700;
@@ -156,6 +171,12 @@
    a point" (tour/hotspot-driven, on .hero__scene below) never fight
    over the same transform */
 .hero__approachbox {
+  /* .hero__stage centers its children (align-items:center) rather than
+     stretching them, so without this the box — and therefore
+     .hero__scene's %-based width below — has no definite width to
+     resolve against and collapses to 0 (vw units didn't have this
+     problem; % does, since it needs a real containing-block width) */
+  align-self: stretch;
   /* the "far away" floor used to be .58 — on wide, short desktop windows
      that left the booth looking lost in a sea of empty cream before the
      visitor scrolled. Keeping the box closer to full size from the start
@@ -179,7 +200,10 @@
    to the illustration regardless of how wide the browser window is. */
 .hero__scene {
   position: relative;
-  width: min(92vw, 50rem, calc(52svh * 1.079));
+  /* % here (not vw) so the scene stays sized to the app shell's own
+     card width — vw would measure the full browser viewport and spill
+     the diorama out past the ~480px-wide card on desktop */
+  width: min(92%, 50rem, calc(52svh * 1.079));
   container-type: inline-size;
   transform-origin: 47% 42%;
   transform: scale(var(--tour-scale, 1));
@@ -627,16 +651,11 @@
 }
 
 @media (max-width: 860px) {
-  .hero__approach { height: 175vh; }
-  .hero__stage { padding: 4rem 1rem 1.5rem; }
-  .hero__scene { width: 94vw; }
+  .hero__scene { width: 94%; }
   /* bigger touch targets on the cropped frame */
   .hotspot--outlet   { left: 27%; top: 11%; width: 47%; height: 51%; }
   .hotspot--homemade { left: 60%; top: 31%; width: 16%; height: 14%; }
   .hotspot--location  { left: 9%;  top: 61%; width: 26%; height: 18%; }
-  .scrollcue { display: none; }
-  /* clear the fixed bottom nav bar */
-  .tourcard { bottom: calc(4.6rem + env(safe-area-inset-bottom)); }
 }
 
 @media (prefers-reduced-motion: reduce) {

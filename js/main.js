@@ -29,12 +29,13 @@ window.RN = window.RN || {};
     try { RN.cart.init(); } catch (e) { console.error(e); }
     try { RN.hero.init(); } catch (e) { console.error(e); }
     try { RN.sections.init(); } catch (e) { console.error(e); }
+    try { RN.tabs.init(); } catch (e) { console.error(e); }
 
-    // Deep-link: #menu / #pesan opens the menu sheet on load
+    // Deep-link: #pesanan / #menu / #pesan opens straight into the
+    // Pesanan tab instead of the scrolling page's old menu sheet
     const h = location.hash.replace("#", "");
-    if (h === "menu" || h === "pesan") {
-      setTimeout(() => RN.panel.open("menu"), 300);
-    }
+    const TAB_ALIAS = { menu: "pesanan", pesan: "pesanan", pesanan: "pesanan", cerita: "cerita", rumah: "rumah", tentang: "tentang", ngemil: "ngemil" };
+    if (TAB_ALIAS[h]) RN.tabs.show(TAB_ALIAS[h]);
   }
 
   if (document.readyState === "loading") {

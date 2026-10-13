@@ -19,262 +19,234 @@
   <link rel="stylesheet" href="styles/hero.css" />
   <link rel="stylesheet" href="styles/sections.css" />
   <link rel="stylesheet" href="styles/panels.css" />
+  <link rel="stylesheet" href="styles/app.css" />
 </head>
 <body>
-  <a class="skip-link" href="#meja">Lewati ke menu</a>
+  <a class="skip-link" href="#tabs">Lewati ke navigasi</a>
 
   <div class="paper-grain" aria-hidden="true"></div>
 
-  <!-- ============================ NAVIGATION ============================ -->
-  <nav class="worldnav" aria-label="Navigasi Rumah Ngemil">
-    <a class="worldnav__brand" href="#ngemil" aria-label="Rumah Ngemil, ke atas">
-      <span class="worldnav__mark" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
-          <path d="M3 11 12 4l9 7" /><path d="M5 10v9h14v-9" /><path d="M10 19v-5h4v5" />
-        </svg>
-      </span>
-      <span class="worldnav__wordmark">Rumah Ngemil</span>
-    </a>
-    <ul class="worldnav__list">
-      <li><a href="#ngemil" data-nav>
-        <span class="worldnav__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 9 9c0-.5-.6-.8-1-.4a2.6 2.6 0 0 1-3.7-3.1 2.6 2.6 0 0 1-3.1-3.7c.4-.5.1-1.1-.4-1A9 9 0 0 0 12 3Z"/><circle cx="10" cy="13.5" r=".9" fill="currentColor" stroke="none"/><circle cx="14.5" cy="15.5" r=".9" fill="currentColor" stroke="none"/></svg></span>Ngemil</a></li>
-      <li><a href="#cerita" data-nav>
-        <span class="worldnav__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3.5" width="14" height="17" rx="1.8"/><path d="M9 3.5v17"/></svg></span><span class="worldnav__t">Cerita<span class="worldnav__t-x">&nbsp;Kami</span></span></a></li>
-      <li><a href="#rumah" data-nav>
-        <span class="worldnav__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.5c4-4.4 6.5-7.6 6.5-10.5a6.5 6.5 0 0 0-13 0c0 2.9 2.5 6.1 6.5 10.5Z"/><circle cx="12" cy="10" r="2.3"/></svg></span><span class="worldnav__t">Rumah<span class="worldnav__t-x">&nbsp;Kami</span></span></a></li>
-      <li><button type="button" data-open="drawer">
-        <span class="worldnav__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7.5h12l.9 12.5H5.1Z"/><path d="M9 7.5V6a3 3 0 0 1 6 0v1.5"/></svg></span>Pesanan</button></li>
-      <li><button type="button" data-open="story">
-        <span class="worldnav__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 13.6 8.4a2 2 0 0 0 1 1L19.5 11l-4.9 1.6a2 2 0 0 0-1 1L12 18.5l-1.6-4.9a2 2 0 0 0-1-1L4.5 11l4.9-1.6a2 2 0 0 0 1-1Z"/></svg></span>Tentang</button></li>
-    </ul>
-  </nav>
-
-  <main>
-    <!-- ============================ HERO WORLD ============================ -->
-    <!-- hero__approach is a tall scroll track; hero__stage pins in place while
-         it scrolls past, so scrolling reads as "walking up to the booth". -->
-    <section class="hero" id="ngemil" aria-label="Dunia Rumah Ngemil">
-      <div class="hero__approach" data-approach>
-        <div class="hero__stage" data-parallax-stage>
-          <div class="hero__lockup">
-            <p class="hero__eyebrow">Sidenreng, Rappang</p>
-            <h1 class="hero__title">Rumah Ngemil</h1>
-            <p class="hero__tagline">#semuaberawaldarirumah</p>
-          </div>
-
-          <div class="hero__approachbox" data-approachbox>
-            <div class="hero__scene" data-camera>
-              <!-- the diorama is cut into a base background plus 13 individually
-                   placed foreground pieces (same source artwork as before, just
-                   un-flattened) so each one can carry its own subtle parallax
-                   depth instead of moving as a single flat photo -->
-              <div class="hero__frame">
-                <img class="hero__img" src="aset/diorama/base.webp" alt="Diorama kertas Rumah Ngemil: sebuah gerai camilan bertenda merah muda di antara pegunungan kertas, sungai berkelok, jembatan, rumah panggung, dan bunga-bunga di pedesaan Sidenreng, Rappang." width="1122" height="1402" decoding="async" fetchpriority="high" />
-                <img class="hero__layer hero__layer--tower"    src="aset/diorama/tower.webp"     alt="" width="94"  height="398" decoding="async" />
-                <img class="hero__layer hero__layer--palm"     src="aset/diorama/palm.webp"      alt="" width="193" height="223" decoding="async" />
-                <img class="hero__layer hero__layer--bridge"   src="aset/diorama/bridge.webp"    alt="" width="251" height="91"  decoding="async" />
-                <img class="hero__layer hero__layer--house"    src="aset/diorama/house.webp"     alt="" width="156" height="184" decoding="async" />
-                <img class="hero__layer hero__layer--tent"     src="aset/diorama/tent.webp"      alt="" width="442" height="507" decoding="async" />
-                <img class="hero__layer hero__layer--banner"   src="aset/diorama/banner.webp"    alt="" width="114" height="319" decoding="async" />
-                <img class="hero__layer hero__layer--sign"     src="aset/diorama/sign.webp"      alt="" width="117" height="120" decoding="async" />
-                <img class="hero__layer hero__layer--table"    src="aset/diorama/table.webp"     alt="" width="342" height="143" decoding="async" />
-                <img class="hero__layer hero__layer--signwood" src="aset/diorama/sign_wood.webp" alt="" width="208" height="180" decoding="async" />
-                <img class="hero__layer hero__layer--seated"   src="aset/diorama/seated.webp"    alt="" width="180" height="158" decoding="async" />
-                <img class="hero__layer hero__layer--man"      src="aset/diorama/man.webp"       alt="" width="64"  height="120" decoding="async" />
-                <img class="hero__layer hero__layer--woman"    src="aset/diorama/woman.webp"     alt="" width="61"  height="114" decoding="async" />
-                <img class="hero__layer hero__layer--boat"     src="aset/diorama/boat.webp"      alt="" width="216" height="102" decoding="async" />
-              </div>
-
-              <!-- ambient decorative layer -->
-              <div class="hero__ambient" aria-hidden="true" data-parallax="14">
-                <span class="cloud cloud--a"></span>
-                <span class="cloud cloud--b"></span>
-                <span class="cloud cloud--c"></span>
-              </div>
-              <div class="hero__motes" aria-hidden="true" data-parallax="22"></div>
-
-              <!-- numbered shortcuts into the 6-step tour, one per stop -->
-              <div class="hero__pins" data-pins data-parallax="8"></div>
-
-              <!-- interaction hotspots layered over the illustration -->
-              <div class="hero__hotspots" data-parallax="8">
-                <button type="button" class="hotspot hotspot--outlet" data-hotspot="menu"
-                  aria-label="Lihat menu — buka gerai Rumah Ngemil">
-                  <span class="hotspot__ring" aria-hidden="true"></span>
-                  <span class="hotspot__label">Lihat menu</span>
-                </button>
-
-                <button type="button" class="hotspot hotspot--homemade" data-hotspot="story"
-                  aria-label="Fresh Homemade Happiness — baca cerita di balik Rumah Ngemil">
-                  <span class="hotspot__ring" aria-hidden="true"></span>
-                  <span class="hotspot__label">Cerita homemade</span>
-                </button>
-
-                <button type="button" class="hotspot hotspot--location" data-hotspot="location"
-                  aria-label="Sidenreng, Rappang — lihat lokasi dan jam buka rumah kami">
-                  <span class="hotspot__ring" aria-hidden="true"></span>
-                  <span class="hotspot__label">Lokasi kami</span>
-                </button>
-              </div>
-
-              <div class="hero__vignette" data-vignette aria-hidden="true"></div>
+  <div id="app">
+    <!-- ============================ TAB: NGEMIL ============================ -->
+    <!-- the interactive diorama + guided tour. No page scroll any more —
+         the booth is simply there, fully arrived, the moment this tab
+         opens (see hero.css's .hero__approach) -->
+    <section class="view" id="view-ngemil" aria-label="Dunia Rumah Ngemil">
+      <div class="hero">
+        <div class="hero__approach" data-approach>
+          <div class="hero__stage" data-parallax-stage>
+            <div class="hero__lockup">
+              <p class="hero__eyebrow">Sidenreng, Rappang</p>
+              <h1 class="hero__title">Rumah Ngemil</h1>
+              <p class="hero__tagline">#semuaberawaldarirumah</p>
             </div>
-          </div>
 
-          <p class="hero__hint" data-hero-hint>Gulir untuk mendekat ke booth kami</p>
+            <div class="hero__approachbox" data-approachbox>
+              <div class="hero__scene" data-camera>
+                <!-- the diorama is cut into a base background plus 13 individually
+                     placed foreground pieces so each one can carry its own subtle
+                     parallax depth instead of moving as a single flat photo -->
+                <div class="hero__frame">
+                  <img class="hero__img" src="aset/diorama/base.webp" alt="Diorama kertas Rumah Ngemil: sebuah gerai camilan bertenda merah muda di antara pegunungan kertas, sungai berkelok, jembatan, rumah panggung, dan bunga-bunga di pedesaan Sidenreng, Rappang." width="1122" height="1402" decoding="async" fetchpriority="high" />
+                  <img class="hero__layer hero__layer--tower"    src="aset/diorama/tower.webp"     alt="" width="94"  height="398" decoding="async" />
+                  <img class="hero__layer hero__layer--palm"     src="aset/diorama/palm.webp"      alt="" width="193" height="223" decoding="async" />
+                  <img class="hero__layer hero__layer--bridge"   src="aset/diorama/bridge.webp"    alt="" width="251" height="91"  decoding="async" />
+                  <img class="hero__layer hero__layer--house"    src="aset/diorama/house.webp"     alt="" width="156" height="184" decoding="async" />
+                  <img class="hero__layer hero__layer--tent"     src="aset/diorama/tent.webp"      alt="" width="442" height="507" decoding="async" />
+                  <img class="hero__layer hero__layer--banner"   src="aset/diorama/banner.webp"    alt="" width="114" height="319" decoding="async" />
+                  <img class="hero__layer hero__layer--sign"     src="aset/diorama/sign.webp"      alt="" width="117" height="120" decoding="async" />
+                  <img class="hero__layer hero__layer--table"    src="aset/diorama/table.webp"     alt="" width="342" height="143" decoding="async" />
+                  <img class="hero__layer hero__layer--signwood" src="aset/diorama/sign_wood.webp" alt="" width="208" height="180" decoding="async" />
+                  <img class="hero__layer hero__layer--seated"   src="aset/diorama/seated.webp"    alt="" width="180" height="158" decoding="async" />
+                  <img class="hero__layer hero__layer--man"      src="aset/diorama/man.webp"       alt="" width="64"  height="120" decoding="async" />
+                  <img class="hero__layer hero__layer--woman"    src="aset/diorama/woman.webp"     alt="" width="61"  height="114" decoding="async" />
+                  <img class="hero__layer hero__layer--boat"     src="aset/diorama/boat.webp"      alt="" width="216" height="102" decoding="async" />
+                </div>
 
-          <button type="button" class="tour-cta" data-start-tour aria-label="Mulai tur booth — jelajahi dengan dipandu">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20v-2a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4v2"/><circle cx="10" cy="7" r="3.2"/><path d="M15 4.5c1.6.4 2.8 1.9 2.8 3.6s-1.2 3.2-2.8 3.6"/><path d="M19 13.2c1.3.5 2 1.8 2 3.2v1.6"/></svg>
-            Mulai Tur Booth
-          </button>
-        </div>
-      </div>
+                <!-- ambient decorative layer -->
+                <div class="hero__ambient" aria-hidden="true" data-parallax="14">
+                  <span class="cloud cloud--a"></span>
+                  <span class="cloud cloud--b"></span>
+                  <span class="cloud cloud--c"></span>
+                </div>
+                <div class="hero__motes" aria-hidden="true" data-parallax="22"></div>
 
-      <a class="scrollcue" href="#cerita" aria-label="Gulir untuk masuk ke rumah">
-        <span class="scrollcue__word">Masuk</span>
-        <span class="scrollcue__line" aria-hidden="true"></span>
-      </a>
-    </section>
+                <!-- numbered shortcuts into the 6-step tour, one per stop -->
+                <div class="hero__pins" data-pins data-parallax="8"></div>
 
-    <!-- ==================== SECTION 01 — MASUK KE RUMAH ==================== -->
-    <section class="section section--intro" id="cerita">
-      <div class="section__inner intro">
-        <div class="intro__lead reveal">
-          <p class="kicker">01 — Masuk ke Rumah</p>
-          <h2 class="display">Camilan yang lahir<br />di dapur sendiri.</h2>
-        </div>
-        <div class="intro__body reveal" data-reveal-delay="1">
-          <p>Rumah Ngemil dimulai dari satu oven kecil, resep keluarga, dan kebiasaan berbagi camilan di ruang tamu. Semua yang kami jual pernah lebih dulu dibuat untuk orang rumah.</p>
-          <p>Kami memanggang dalam jumlah kecil setiap hari, membungkusnya dengan tangan, dan mengantarnya selagi masih hangat cerita — dari Sidenreng, Rappang, untuk meja makanmu.</p>
-          <p class="intro__sign">— Keluarga Rumah Ngemil</p>
-        </div>
-      </div>
-    </section>
+                <!-- interaction hotspots layered over the illustration -->
+                <div class="hero__hotspots" data-parallax="8">
+                  <button type="button" class="hotspot hotspot--outlet" data-hotspot="menu"
+                    aria-label="Lihat menu — buka gerai Rumah Ngemil">
+                    <span class="hotspot__ring" aria-hidden="true"></span>
+                    <span class="hotspot__label">Lihat menu</span>
+                  </button>
 
-    <!-- ==================== SECTION 02 — YANG ADA DI MEJA ==================== -->
-    <section class="section section--table" id="meja">
-      <div class="section__inner">
-        <header class="section__head reveal">
-          <p class="kicker">02 — Yang Ada di Meja</p>
-          <h2 class="display">Beberapa yang sedang hangat</h2>
-          <p class="section__sub">Ketuk satu untuk melihatnya lebih dekat, atau buka menu lengkapnya.</p>
-        </header>
+                  <button type="button" class="hotspot hotspot--homemade" data-hotspot="story"
+                    aria-label="Fresh Homemade Happiness — baca cerita di balik Rumah Ngemil">
+                    <span class="hotspot__ring" aria-hidden="true"></span>
+                    <span class="hotspot__label">Cerita homemade</span>
+                  </button>
 
-        <div class="table-scene reveal" data-reveal-delay="1">
-          <div class="table-scene__surface" aria-hidden="true"></div>
-          <ul class="table-scene__dishes" data-dish-list aria-label="Camilan pilihan di atas meja"></ul>
-        </div>
+                  <button type="button" class="hotspot hotspot--location" data-hotspot="location"
+                    aria-label="Sidenreng, Rappang — lihat lokasi dan jam buka rumah kami">
+                    <span class="hotspot__ring" aria-hidden="true"></span>
+                    <span class="hotspot__label">Lokasi kami</span>
+                  </button>
+                </div>
 
-        <div class="section__cta reveal">
-          <button type="button" class="btn btn--primary" data-open="menu">Buka menu lengkap</button>
-        </div>
-      </div>
-    </section>
+                <div class="hero__vignette" data-vignette aria-hidden="true"></div>
+              </div>
+            </div>
 
-    <!-- ==================== SECTION 03 — DIBUAT DARI RUMAH ==================== -->
-    <section class="section section--story" id="proses">
-      <div class="section__inner">
-        <header class="section__head reveal">
-          <p class="kicker">03 — Dibuat dari Rumah</p>
-          <h2 class="display">Freshly made. Homemade.<br />Made to be shared.</h2>
-        </header>
-        <ol class="storystrip">
-          <li class="storystrip__card reveal">
-            <span class="storystrip__no" aria-hidden="true">01</span>
-            <h3>Bahan yang jujur</h3>
-            <p>Mentega asli, telur segar, gula secukupnya. Tidak ada yang kami sembunyikan di balik label.</p>
-          </li>
-          <li class="storystrip__card reveal" data-reveal-delay="1">
-            <span class="storystrip__no" aria-hidden="true">02</span>
-            <h3>Dipanggang kecil-kecil</h3>
-            <p>Setiap batch dibuat pagi hari dalam jumlah terbatas, supaya sampai ke kamu masih terasa baru.</p>
-          </li>
-          <li class="storystrip__card reveal" data-reveal-delay="2">
-            <span class="storystrip__no" aria-hidden="true">03</span>
-            <h3>Dibungkus dengan tangan</h3>
-            <p>Dilipat, disegel, diberi catatan kecil. Seperti menyiapkan bekal untuk keluarga sendiri.</p>
-          </li>
-          <li class="storystrip__card reveal" data-reveal-delay="3">
-            <span class="storystrip__no" aria-hidden="true">04</span>
-            <h3>Untuk dibagi</h3>
-            <p>Porsi kami pas untuk diedarkan di meja. Camilan paling enak saat ada yang menemani.</p>
-          </li>
-        </ol>
-        <div class="section__cta reveal">
-          <button type="button" class="btn btn--ghost" data-open="story">Baca filosofi kami</button>
-        </div>
-      </div>
-    </section>
+            <p class="hero__hint" data-hero-hint>Ketuk gerai, papan tanda, atau seal di dalam ilustrasi untuk menjelajah.</p>
 
-    <!-- ==================== SECTION 04 — DARI SIDENRENG, RAPPANG ==================== -->
-    <section class="section section--place" id="rumah">
-      <div class="section__inner place">
-        <div class="place__text reveal">
-          <p class="kicker">04 — Dari Sidenreng, Rappang</p>
-          <h2 class="display">Sebuah rumah di<br />tepi Danau Sidenreng.</h2>
-          <p>Kabupaten Sidenreng Rappang — orang menyebutnya Sidrap — adalah tanah lumbung padi di Sulawesi Selatan. Di sinilah dapur kami berada, di antara sawah, danau, dan angin sore yang tenang.</p>
-          <ul class="place__facts">
-            <li><span class="place__facts-k">Alamat</span><span class="place__facts-v" data-place-address></span></li>
-            <li><span class="place__facts-k">Jam buka</span><span class="place__facts-v" data-place-hours></span></li>
-            <li><span class="place__facts-k">Pesan / tanya</span><span class="place__facts-v" data-place-phone></span></li>
-          </ul>
-          <button type="button" class="btn btn--primary" data-open="location">Lihat peta &amp; cerita tempatnya</button>
-        </div>
-        <div class="place__map reveal" data-reveal-delay="1">
-          <div class="minimap" role="img" aria-label="Peta ilustratif: gerai Rumah Ngemil di dekat Danau Sidenreng, di antara sawah dan sungai.">
-            <svg class="minimap__svg" viewBox="0 0 400 300" aria-hidden="true">
-              <rect width="400" height="300" fill="var(--kraft)" />
-              <path d="M0 210 Q120 180 210 220 T400 210 V300 H0 Z" fill="var(--teal)" />
-              <path d="M0 214 Q120 184 210 224 T400 214" fill="none" stroke="var(--teal-deep)" stroke-width="2" opacity=".5" />
-              <path d="M150 0 Q170 90 120 150 T150 300" fill="none" stroke="var(--teal)" stroke-width="14" stroke-linecap="round" opacity=".85" />
-              <g fill="var(--sage)" opacity=".9">
-                <path d="M40 60 q30 -26 60 0 q30 26 0 40 q-30 20 -60 0 q-24 -20 0 -40Z" />
-                <path d="M250 40 q34 -24 64 4 q26 30 -6 46 q-36 16 -62 -8 q-20 -22 4 -42Z" />
-              </g>
-              <g stroke="var(--kraft-deep)" stroke-width="6" stroke-linecap="round" fill="none" opacity=".7" stroke-dasharray="1 12">
-                <path d="M60 250 Q180 210 210 150 T330 70" />
-              </g>
-              <text x="300" y="250" font-family="Fraunces, serif" font-size="15" fill="var(--ink-soft)">Danau Sidenreng</text>
-              <text x="34" y="40" font-family="Fraunces, serif" font-size="14" fill="var(--ink-soft)">sawah</text>
-            </svg>
-            <button type="button" class="minimap__pin" data-open="location" aria-label="Gerai Rumah Ngemil — buka detail lokasi">
-              <span class="minimap__pin-dot" aria-hidden="true"></span>
-              <span class="minimap__pin-label">Rumah Ngemil</span>
+            <button type="button" class="tour-cta" data-start-tour aria-label="Mulai tur booth — jelajahi dengan dipandu">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 20v-2a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4v2"/><circle cx="10" cy="7" r="3.2"/><path d="M15 4.5c1.6.4 2.8 1.9 2.8 3.6s-1.2 3.2-2.8 3.6"/><path d="M19 13.2c1.3.5 2 1.8 2 3.2v1.6"/></svg>
+              Mulai Tur Booth
             </button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ==================== SECTION 05 — PESANANMU ==================== -->
-    <section class="section section--order" id="pesanan">
-      <div class="section__inner">
-        <header class="section__head reveal">
-          <p class="kicker">05 — Pesananmu</p>
-          <h2 class="display">Selalu bisa kamu buka lagi</h2>
-        </header>
-        <div class="ordersummary reveal" data-order-summary data-reveal-delay="1">
-          <!-- filled by js/cart.js -->
-        </div>
+    <!-- ============================ TAB: CERITA ============================ -->
+    <section class="view view--scroll tabpage" id="view-cerita" aria-label="Cerita Rumah Ngemil" hidden>
+      <p class="eyebrow">Cerita Kami</p>
+      <h1 class="tabpage__title">Camilan yang lahir di dapur sendiri.</h1>
+      <div class="intro__body">
+        <p>Rumah Ngemil dimulai dari satu oven kecil, resep keluarga, dan kebiasaan berbagi camilan di ruang tamu. Semua yang kami jual pernah lebih dulu dibuat untuk orang rumah.</p>
+        <p>Kami memanggang dalam jumlah kecil setiap hari, membungkusnya dengan tangan, dan mengantarnya selagi masih hangat cerita — dari Sidenreng, Rappang, untuk meja makanmu.</p>
+        <p class="intro__sign">— Keluarga Rumah Ngemil</p>
+      </div>
+
+      <h2>Freshly made. Homemade. Made to be shared.</h2>
+      <ol class="storystrip">
+        <li class="storystrip__card">
+          <span class="storystrip__no" aria-hidden="true">01</span>
+          <h3>Bahan yang jujur</h3>
+          <p>Mentega asli, telur segar, gula secukupnya. Tidak ada yang kami sembunyikan di balik label.</p>
+        </li>
+        <li class="storystrip__card">
+          <span class="storystrip__no" aria-hidden="true">02</span>
+          <h3>Dipanggang kecil-kecil</h3>
+          <p>Setiap batch dibuat pagi hari dalam jumlah terbatas, supaya sampai ke kamu masih terasa baru.</p>
+        </li>
+        <li class="storystrip__card">
+          <span class="storystrip__no" aria-hidden="true">03</span>
+          <h3>Dibungkus dengan tangan</h3>
+          <p>Dilipat, disegel, diberi catatan kecil. Seperti menyiapkan bekal untuk keluarga sendiri.</p>
+        </li>
+        <li class="storystrip__card">
+          <span class="storystrip__no" aria-hidden="true">04</span>
+          <h3>Untuk dibagi</h3>
+          <p>Porsi kami pas untuk diedarkan di meja. Camilan paling enak saat ada yang menemani.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ============================ TAB: RUMAH ============================= -->
+    <section class="view view--scroll tabpage" id="view-rumah" aria-label="Rumah Kami" hidden>
+      <p class="eyebrow">Rumah Kami</p>
+      <h1 class="tabpage__title">Sebuah rumah di tepi Danau Sidenreng.</h1>
+      <p class="tabpage__lead">Kabupaten Sidenreng Rappang — orang menyebutnya Sidrap — adalah tanah lumbung padi di Sulawesi Selatan. Di sinilah dapur kami berada, di antara sawah, danau, dan angin sore yang tenang.</p>
+
+      <ul class="place__facts">
+        <li><span class="place__facts-k">Alamat</span><span class="place__facts-v" data-place-address></span></li>
+        <li><span class="place__facts-k">Jam buka</span><span class="place__facts-v" data-place-hours></span></li>
+        <li><span class="place__facts-k">Pesan / tanya</span><span class="place__facts-v" data-place-phone></span></li>
+      </ul>
+
+      <div class="minimap" role="img" aria-label="Peta ilustratif: gerai Rumah Ngemil di dekat Danau Sidenreng, di antara sawah dan sungai.">
+        <svg class="minimap__svg" viewBox="0 0 400 300" aria-hidden="true">
+          <rect width="400" height="300" fill="var(--kraft)" />
+          <path d="M0 210 Q120 180 210 220 T400 210 V300 H0 Z" fill="var(--teal)" />
+          <path d="M0 214 Q120 184 210 224 T400 214" fill="none" stroke="var(--teal-deep)" stroke-width="2" opacity=".5" />
+          <path d="M150 0 Q170 90 120 150 T150 300" fill="none" stroke="var(--teal)" stroke-width="14" stroke-linecap="round" opacity=".85" />
+          <g fill="var(--sage)" opacity=".9">
+            <path d="M40 60 q30 -26 60 0 q30 26 0 40 q-30 20 -60 0 q-24 -20 0 -40Z" />
+            <path d="M250 40 q34 -24 64 4 q26 30 -6 46 q-36 16 -62 -8 q-20 -22 4 -42Z" />
+          </g>
+          <g stroke="var(--kraft-deep)" stroke-width="6" stroke-linecap="round" fill="none" opacity=".7" stroke-dasharray="1 12">
+            <path d="M60 250 Q180 210 210 150 T330 70" />
+          </g>
+          <text x="300" y="250" font-family="Fraunces, serif" font-size="15" fill="var(--ink-soft)">Danau Sidenreng</text>
+          <text x="34" y="40" font-family="Fraunces, serif" font-size="14" fill="var(--ink-soft)">sawah</text>
+        </svg>
+        <a class="minimap__pin" href="https://maps.google.com/?q=Sidenreng+Rappang" target="_blank" rel="noopener" aria-label="Buka lokasi di Google Maps">
+          <span class="minimap__pin-dot" aria-hidden="true"></span>
+          <span class="minimap__pin-label">Rumah Ngemil</span>
+        </a>
       </div>
     </section>
 
-    <footer class="sitefoot">
-      <div class="section__inner sitefoot__inner">
-        <p class="sitefoot__brand">Rumah Ngemil</p>
-        <p class="sitefoot__motto">Semua berawal dari rumah.</p>
-        <p class="sitefoot__meta">Sidenreng, Rappang · dibuat segar tiap hari</p>
-      </div>
-    </footer>
-  </main>
+    <!-- ============================ TAB: PESANAN =========================== -->
+    <section class="view view--scroll tabpage" id="view-pesanan" aria-label="Pesanan" hidden>
+      <p class="eyebrow">Pesanan</p>
+      <h1 class="tabpage__title">Pilih camilanmu</h1>
+      <p class="tabpage__lead">Dipanggang segar setiap hari, dibungkus dengan tangan. Pilih kategorinya, lalu tambahkan ke pesanan.</p>
 
-  <!-- floating order indicator -->
-  <button type="button" class="cartfab" data-cart-fab hidden aria-live="off">
-    <span class="cartfab__icon" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7.5h12l.9 12.5H5.1Z"/><path d="M9 7.5V6a3 3 0 0 1 6 0v1.5"/></svg>
-    </span>
-    <span class="cartfab__text"><span data-cart-count>0</span> item di pesanan</span>
-  </button>
+      <div>
+        <div class="cattabs" role="tablist" aria-label="Kategori camilan" data-pesanan-cattabs></div>
+        <p class="cattab__blurb" data-pesanan-blurb></p>
+        <div class="prodgrid" role="tabpanel" data-pesanan-grid></div>
+      </div>
+
+      <div class="ordersummary" data-order-summary></div>
+    </section>
+
+    <!-- ============================ TAB: TENTANG =========================== -->
+    <section class="view view--scroll tabpage" id="view-tentang" aria-label="Tentang Rumah Ngemil" hidden>
+      <p class="eyebrow">Tentang</p>
+      <h1 class="tabpage__title">Freshly made. Homemade.<br />Made to be shared.</h1>
+
+      <div class="storyover__grid">
+        <div><h3>Bahan yang jujur</h3><p>Mentega asli, telur segar, gula secukupnya. Kalau kami tidak mau memakannya di rumah, kami tidak menjualnya.</p></div>
+        <div><h3>Proses rumahan</h3><p>Tidak ada lini produksi. Ada oven rumah tangga, timer, dan tangan yang sama yang membuat sarapan tadi pagi.</p></div>
+        <div><h3>Cerita lokal</h3><p>Resep-resepnya campuran: kue kering warisan keluarga, risol gorengan pasar, dan rasa khas Sidrap.</p></div>
+        <div><h3>Dibuat untuk dibagi</h3><p>Ukuran porsi kami pas untuk diedarkan di meja. Camilan paling enak saat ada teman yang menemani.</p></div>
+      </div>
+
+      <ul class="storyover__values" aria-label="Nilai yang kami pegang">
+        <li>Tanpa pengawet</li><li>Batch kecil</li><li>Dibungkus tangan</li><li>Bahan lokal</li><li>Pre-order</li>
+      </ul>
+
+      <span class="tagchip">#semuaberawaldarirumah</span>
+      <p class="intro__sign">— Keluarga Rumah Ngemil</p>
+    </section>
+
+    <!-- bottom tab bar -->
+    <nav id="tabs" aria-label="Navigasi Rumah Ngemil">
+      <button type="button" class="tab" data-tab="ngemil" aria-current="page">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-.5-.6-.8-1-.4a2.6 2.6 0 0 1-3.7-3.1 2.6 2.6 0 0 1-3.1-3.7c.4-.5.1-1.1-.4-1A9 9 0 0 0 12 3Z"/><circle cx="10" cy="13.5" r=".9" fill="currentColor" stroke="none"/><circle cx="14.5" cy="15.5" r=".9" fill="currentColor" stroke="none"/></svg>
+        Ngemil
+      </button>
+      <button type="button" class="tab" data-tab="cerita">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3.5" width="14" height="17" rx="1.8"/><path d="M9 3.5v17"/></svg>
+        Cerita
+      </button>
+      <button type="button" class="tab" data-tab="rumah">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5c4-4.4 6.5-7.6 6.5-10.5a6.5 6.5 0 0 0-13 0c0 2.9 2.5 6.1 6.5 10.5Z"/><circle cx="12" cy="10" r="2.3"/></svg>
+        Rumah
+      </button>
+      <button type="button" class="tab" data-tab="pesanan">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7.5h12l.9 12.5H5.1Z"/><path d="M9 7.5V6a3 3 0 0 1 6 0v1.5"/></svg>
+        Pesanan
+      </button>
+      <button type="button" class="tab" data-tab="tentang">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5 13.6 8.4a2 2 0 0 0 1 1L19.5 11l-4.9 1.6a2 2 0 0 0-1 1L12 18.5l-1.6-4.9a2 2 0 0 0-1-1L4.5 11l4.9-1.6a2 2 0 0 0 1-1Z"/></svg>
+        Tentang
+      </button>
+    </nav>
+
+    <!-- floating order indicator, anchored to the shell (see app.css) -->
+    <button type="button" class="cartfab" data-cart-fab hidden aria-live="off">
+      <span class="cartfab__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7.5h12l.9 12.5H5.1Z"/><path d="M9 7.5V6a3 3 0 0 1 6 0v1.5"/></svg>
+      </span>
+      <span class="cartfab__text"><span data-cart-count>0</span> item di pesanan</span>
+    </button>
+  </div>
 
   <!-- single reusable panel mount point -->
   <div class="panel-root" data-panel-root></div>
@@ -292,6 +264,7 @@
   <script src="js/location.js"></script>
   <script src="js/hero.js"></script>
   <script src="js/sections.js"></script>
+  <script src="js/tabs.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
