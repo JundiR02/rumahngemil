@@ -113,27 +113,39 @@
   height: 100%;
 }
 
+/* the diorama now fills the whole tab edge to edge (see .hero__scene
+   below) instead of sitting in a small boxed card with the title/hint/
+   button stacked around it — those float as overlays on top of the
+   image instead, so .hero__stage is just a plain positioned container,
+   not a flex row competing with the image for height */
 .hero__stage {
   position: relative;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(.75rem, 2.4vh, 1.5rem);
-  padding: clamp(.75rem, 2vh, 1.25rem) 1rem 1rem;
 }
 
 /* ---------------------------- lockup ---------------------------- */
-/* collapses to nothing while the tour is open, to give the tour card
-   room inside the shell's limited height — same move the reference
-   diorama prototype makes with its own header */
+/* floats over the top of the photo, with a soft scrim behind it so the
+   text stays legible on busy artwork; collapses to nothing while the
+   tour is open, same move the reference diorama prototype makes */
 .hero__lockup {
+  position: absolute;
+  top: calc(.9rem + env(safe-area-inset-top));
+  left: 50%;
+  translate: -50% 0;
+  z-index: 4;
   text-align: center;
-  max-width: 92%;
+  max-width: 90%;
   max-height: 220px;
   overflow: hidden;
+  padding: .5rem 1rem;
   transition: max-height var(--dur-3) var(--ease), opacity var(--dur-2) var(--ease);
+}
+.hero__lockup::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -.5rem -2.5rem;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--cream) 90%, transparent) 0%, transparent 72%);
 }
 .hero[data-touring="true"] .hero__lockup { max-height: 0; opacity: 0; pointer-events: none; }
 .hero__eyebrow {
@@ -171,12 +183,17 @@
    a point" (tour/hotspot-driven, on .hero__scene below) never fight
    over the same transform */
 .hero__approachbox {
-  /* .hero__stage centers its children (align-items:center) rather than
-     stretching them, so without this the box — and therefore
-     .hero__scene's %-based width below — has no definite width to
-     resolve against and collapses to 0 (vw units didn't have this
-     problem; % does, since it needs a real containing-block width) */
-  align-self: stretch;
+  /* fills the whole stage and flex-centers the scene inside it, both
+     axes — the scene itself is full width (see .hero__scene) and
+     whatever height its fixed aspect-ratio works out to, so this is
+     what actually centers it vertically when that's shorter than the
+     tab's own height */
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   /* the "far away" floor used to be .58 — on wide, short desktop windows
      that left the booth looking lost in a sea of empty cream before the
      visitor scrolled. Keeping the box closer to full size from the start
@@ -200,10 +217,15 @@
    to the illustration regardless of how wide the browser window is. */
 .hero__scene {
   position: relative;
-  /* % here (not vw) so the scene stays sized to the app shell's own
-     card width — vw would measure the full browser viewport and spill
-     the diorama out past the ~480px-wide card on desktop */
-  width: min(92%, 50rem, calc(52svh * 1.079));
+  /* full width of the tab, edge to edge — % here (not vw) so it stays
+     sized to the app shell's own card width, not the full browser
+     viewport, which would spill it out past the ~480px-wide card on
+     desktop. Height follows from .hero__frame's fixed aspect-ratio
+     below (that ratio has to stay fixed for the 13 layer cutouts'
+     percentage positions to line up with the base art — it can't just
+     stretch to fill the tab's full height too, which is usually much
+     taller than this nearly-square frame) */
+  width: min(100%, 50rem);
   container-type: inline-size;
   transform-origin: 47% 42%;
   transform: scale(var(--tour-scale, 1));
@@ -281,12 +303,22 @@
 }
 .hero[data-touring="true"] .hero__vignette { opacity: 1; }
 
+/* floats over the bottom of the photo, same scrim treatment as the
+   lockup at the top */
 .hero__hint {
-  max-width: 36ch;
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  bottom: calc(5rem + env(safe-area-inset-bottom));
+  translate: -50% 0;
+  max-width: 78%;
   font-size: .82rem;
   text-align: center;
   color: var(--ink-soft);
   opacity: .85;
+  padding: .35rem .9rem;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--cream) 80%, transparent);
   transition: opacity var(--dur-3) var(--ease);
 }
 .hero__hint.is-dim { opacity: 0; }
@@ -294,8 +326,10 @@
 
 /* ------------------------------ tour cta --------------------------- */
 .tour-cta {
-  position: relative;
+  position: absolute;
   z-index: 6;
+  left: 50%;
+  bottom: calc(1.25rem + env(safe-area-inset-bottom));
   display: inline-flex;
   align-items: center;
   gap: .55rem;
@@ -308,6 +342,10 @@
   border-radius: var(--r-pill);
   box-shadow: var(--sh-2);
   opacity: 0;
+  /* translate (the standalone property) centers it horizontally;
+     transform keeps doing the entrance animation below — the two
+     compose instead of clobbering each other */
+  translate: -50% 0;
   transform: translateY(10px) scale(.96);
   pointer-events: none;
   transition:
@@ -651,7 +689,6 @@
 }
 
 @media (max-width: 860px) {
-  .hero__scene { width: 94%; }
   /* bigger touch targets on the cropped frame */
   .hotspot--outlet   { left: 27%; top: 11%; width: 47%; height: 51%; }
   .hotspot--homemade { left: 60%; top: 31%; width: 16%; height: 14%; }
