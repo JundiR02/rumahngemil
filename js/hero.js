@@ -226,13 +226,6 @@ RN.hero = (function () {
       '<h3 class="tourcard__title" data-tc-title></h3>' +
       '<p class="tourcard__body" data-tc-body></p>' +
       '<a href="#" class="tourcard__link" data-tc-link hidden></a>' +
-      '<p class="tourcard__maplabel">Posisi di denah booth</p>' +
-      '<div class="tourcard__map" aria-hidden="true">' +
-      '<span class="tourcard__map-zone tourcard__map-zone--outlet"></span>' +
-      '<span class="tourcard__map-zone tourcard__map-zone--homemade"></span>' +
-      '<span class="tourcard__map-zone tourcard__map-zone--location"></span>' +
-      '<span class="tourcard__map-dot" data-tc-mapdot></span>' +
-      "</div>" +
       '<div class="tourcard__nav">' +
       '<button type="button" class="btn btn--ghost" data-tc-back></button>' +
       '<button type="button" class="btn btn--primary" data-tc-next></button>' +
@@ -250,11 +243,6 @@ RN.hero = (function () {
     tourCard.querySelector("[data-tc-eyebrow]").textContent = `Langkah ${tourIndex + 1} dari ${TOUR_STEPS.length}`;
     tourCard.querySelector("[data-tc-title]").textContent = step.title;
     tourCard.querySelector("[data-tc-body]").textContent = step.body;
-
-    const mapDot = tourCard.querySelector("[data-tc-mapdot]");
-    const [mapLeft, mapTop] = step.point.origin.split(" ").map(parseFloat);
-    mapDot.style.left = mapLeft + "%";
-    mapDot.style.top = mapTop + "%";
 
     const linkEl = tourCard.querySelector("[data-tc-link]");
     if (step.link) {

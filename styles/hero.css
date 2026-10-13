@@ -434,59 +434,20 @@
    link text — this explicit override (higher specificity) restores it */
 .tourcard__link[hidden] { display: none; }
 
-/* ------------------------- tour card: mini map ---------------------- */
-/* a small schematic of the booth frame, echoing the real hotspot
-   positions, so visitors can see where the camera is pointing */
-.tourcard__maplabel {
-  margin-top: 1rem;
-  font-size: .72rem;
-  font-weight: 700;
-  color: var(--ink-soft);
-}
-.tourcard__map {
-  position: relative;
-  margin: .5rem auto 0;
-  width: 100%;
-  max-width: 220px;
-  aspect-ratio: 1122 / 1040;
-  border-radius: var(--r-2);
-  border: 1.5px dashed var(--line);
-  background: color-mix(in srgb, var(--paper) 70%, transparent);
-  overflow: hidden;
-}
-.tourcard__map-zone {
-  position: absolute;
-  border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent);
-  background: color-mix(in srgb, var(--accent) 10%, transparent);
-}
-.tourcard__map-zone--outlet   { left: 29.86%; top: 12.52%; width: 39.39%; height: 48.75%; border-radius: var(--r-1); }
-.tourcard__map-zone--homemade { left: 63.01%; top: 32.33%; width: 10.43%; height: 11.54%; border-radius: 50%; }
-.tourcard__map-zone--location  { left: 11.85%; top: 62.04%; width: 18.54%; height: 17.31%; border-radius: var(--r-1); }
-.tourcard__map-dot {
-  position: absolute;
-  width: 14px; height: 14px;
-  border-radius: 50%;
-  background: var(--accent);
-  border: 2.5px solid var(--paper-2);
-  box-shadow: 0 0 0 1px var(--ink), var(--sh-2);
-  translate: -50% -50%;
-  left: 47%; top: 42%;
-  transition: left .6s var(--ease-out), top .6s var(--ease-out);
-}
-
-.tourcard__nav { display: flex; gap: .6rem; margin-top: 1.1rem; }
+/* nav buttons stay compact (not the earlier min-height:3rem pill) —
+   the card's real estate is shared with the image above it now, so
+   every bit of height it doesn't need matters */
+.tourcard__nav { display: flex; gap: .55rem; margin-top: .9rem; }
 .tourcard__nav .btn {
   flex: 1;
-  min-height: 3rem;
-  padding: .75rem 1rem;
-  font-size: .88rem;
+  min-height: 2.5rem;
+  padding: .55rem 1rem;
+  font-size: .86rem;
   border-radius: var(--r-pill);
 }
 
 @media (max-width: 520px) {
   .tourcard { padding: 1rem 1.1rem calc(1rem + env(safe-area-inset-bottom)); }
-  .tourcard__map { max-width: 150px; }
-  .tourcard__maplabel { margin-top: .75rem; font-size: .68rem; }
 }
 
 /* --------------------------- hotspots -------------------------- */
@@ -728,5 +689,5 @@
   .mote { display: none; }
   .hotspot__ring { animation: none; }
   .scrollcue__line { animation: none; }
-  .tour-cta, .tourcard, .hero__vignette, .tourcard__map-dot { transition: none; }
+  .tour-cta, .tourcard, .hero__vignette { transition: none; }
 }
