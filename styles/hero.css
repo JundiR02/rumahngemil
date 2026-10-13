@@ -243,7 +243,10 @@
      same job before the tour card existed, but % can't express "100%
      of my own parent's height" the way cqh can; vh/svh can't either,
      since those mean the full viewport, not this shrinkable box */
-  width: min(100%, 50rem, calc(100cqh * 1.0788));
+  /* the ratio here (941/1672) must match .hero__frame's aspect-ratio
+     below, or this height-based term silently stops being the binding
+     constraint it's meant to be when the tour card shrinks the box */
+  width: min(100%, 50rem, calc(100cqh * 0.5628));
   container-type: inline-size;
   transform-origin: 47% 42%;
   transform: scale(var(--tour-scale, 1));
@@ -258,7 +261,7 @@
 .hero__frame {
   position: relative;
   width: 100%;
-  aspect-ratio: 1122 / 1040;
+  aspect-ratio: 941 / 1672;
   overflow: hidden;
   border-radius: 3px;
   box-shadow: 0 22px 55px -26px rgba(58, 42, 27, .45);
@@ -267,42 +270,9 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 90%;
+  object-position: 50% 50%;
   transform: translate3d(calc(var(--px) * -3px), calc(var(--py) * -3px), 0) scale(1.04);
 }
-
-/* -------------------------- diorama layers -------------------------- */
-/* the 13 foreground cutouts, positioned as percentages of the same
-   1122×1040 cropped window the base background uses (object-position
-   50% 90% crops ~326px of baked title off the top — see the comment
-   above .hero__frame) so every layer lines up with the background
-   exactly. --depth scales each one's share of the shared pointer
-   parallax (--px/--py, set in hero.js): it's signed, not just sized,
-   the same way real depth reads — background pieces (tower, palm,
-   bridge) drift a touch *against* the pointer while foreground pieces
-   (boat, the seated couple) drift *with* it and the most, so the scene
-   reads as layers at different depths rather than one flat photo
-   moving at different speeds. */
-.hero__layer {
-  position: absolute;
-  display: block;
-  pointer-events: none;
-  user-select: none;
-  transform: translate3d(calc(var(--px, 0) * var(--depth, 6) * 1px), calc(var(--py, 0) * var(--depth, 6) * 1px), 0);
-}
-.hero__layer--tower    { left: 16.04%; top: 7.33%;  width: 8.38%;  height: 38.27%; --depth: -3; }
-.hero__layer--palm     { left: 1.16%;  top: 13.39%; width: 17.20%; height: 21.44%; --depth: -2; }
-.hero__layer--bridge   { left: 71.12%; top: 41.27%; width: 22.37%; height: 8.75%;  --depth: -2; }
-.hero__layer--house    { left: 84.58%; top: 51.27%; width: 13.90%; height: 17.69%; --depth: -1; }
-.hero__layer--tent     { left: 29.86%; top: 12.52%; width: 39.39%; height: 48.75%; --depth: 3; }
-.hero__layer--banner   { left: 24.33%; top: 30.21%; width: 10.16%; height: 30.67%; --depth: 5; }
-.hero__layer--sign     { left: 63.01%; top: 32.33%; width: 10.43%; height: 11.54%; --depth: 5; }
-.hero__layer--table    { left: 33.33%; top: 59.25%; width: 30.48%; height: 13.75%; --depth: 8; }
-.hero__layer--signwood { left: 11.85%; top: 62.04%; width: 18.54%; height: 17.31%; --depth: 10; }
-.hero__layer--seated   { left: 77.81%; top: 72.52%; width: 16.04%; height: 15.19%; --depth: 8; }
-.hero__layer--man      { left: 43.23%; top: 72.42%; width: 5.70%;  height: 11.54%; --depth: 10; }
-.hero__layer--woman    { left: 63.82%; top: 68.10%; width: 5.44%;  height: 10.96%; --depth: 10; }
-.hero__layer--boat     { left: 18.54%; top: 87.62%; width: 19.25%; height: 9.81%;  --depth: 14; }
 
 /* pan/zoom toward a point — driven by RN.hero.panTo(), used by both the
    "lihat menu" hotspot and the guided tour */
@@ -571,13 +541,14 @@
 .hotspot:hover .hotspot__label,
 .hotspot:focus-visible .hotspot__label { opacity: 1; translate: -50% 0; }
 
-/* positioned over key objects in the cropped frame, matching the real
-   layer boxes in .hero__layer above (the hotspots sit over the base
-   tent/sign/sign_wood art, just with a transparent clickable button on
-   top rather than being the image layer itself) */
-.hotspot--outlet   { left: 29.86%; top: 12.52%; width: 39.39%; height: 48.75%; }
-.hotspot--homemade { left: 63.01%; top: 32.33%; width: 10.43%; height: 11.54%; border-radius: 50%; }
-.hotspot--location  { left: 11.85%; top: 62.04%; width: 18.54%; height: 17.31%; border-radius: var(--r-1); }
+/* positions re-estimated by eye against the new single-image diorama
+   (replaced the old 13-layer version, which had these pixel-measured
+   from its reference prototype) — reasonable bounding boxes around the
+   tent/counter, the blank circular sign, and the blank location sign,
+   not pixel-exact */
+.hotspot--outlet   { left: 27.6%; top: 35.9%; width: 48.9%; height: 32.3%; }
+.hotspot--homemade { left: 64.8%; top: 47.8%; width: 11.7%; height: 6.9%; border-radius: 50%; }
+.hotspot--location  { left: 17.5%; top: 79.6%; width: 14.9%; height: 4.8%; border-radius: var(--r-1); }
 
 
 /* --------------------------- clouds --------------------------- */
@@ -671,10 +642,10 @@
 }
 
 @media (max-width: 860px) {
-  /* bigger touch targets on the cropped frame */
-  .hotspot--outlet   { left: 27%; top: 11%; width: 47%; height: 51%; }
-  .hotspot--homemade { left: 60%; top: 31%; width: 16%; height: 14%; }
-  .hotspot--location  { left: 9%;  top: 61%; width: 26%; height: 18%; }
+  /* bigger touch targets on the diorama */
+  .hotspot--outlet   { left: 24%; top: 33%; width: 55%; height: 37%; }
+  .hotspot--homemade { left: 61.5%; top: 46%; width: 17%; height: 10%; }
+  .hotspot--location  { left: 14%; top: 78%; width: 20%; height: 8%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -683,7 +654,6 @@
   .hero__stage { position: relative; }
   .hero__approachbox { transform: none; filter: none; }
   .hero__scene, .hero__frame img { transition: none; }
-  .hero__layer { transform: none; }
   .cloud--a, .cloud--b, .cloud--c { animation: none; }
   .cloud--a { left: 8%; } .cloud--b { left: 68%; } .cloud--c { left: 40%; }
   .mote { display: none; }

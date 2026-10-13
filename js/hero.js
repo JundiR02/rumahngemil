@@ -28,28 +28,27 @@ RN.hero = (function () {
   const HINT_WALK = "Gulir untuk mendekat ke booth kami";
   const HINT_EXPLORE = "Ketuk gerai, papan tanda, atau seal di dalam ilustrasi untuk menjelajah.";
 
-  // pan targets, matched to each layer's own box in hero.css (.hero__layer--*)
-  const HOME = { origin: "47% 42%", scale: 1 };
+  // pan targets — re-estimated by eye against the new single-image
+  // diorama (replaced the old 13-layer version, whose POINTS/TOUR_STEPS
+  // coordinates were pixel-measured from a reference prototype this one
+  // doesn't have; these are approximate bounding-box centers, not exact)
+  const HOME = { origin: "50% 50%", scale: 1 };
   const POINTS = {
-    outlet: { origin: "49.5% 36.9%", scale: 1.8 },    // centered on the whole tent (.hero__layer--tent)
-    homemade: { origin: "68.2% 38.4%", scale: 2.3 },  // the round seal (.hero__layer--sign)
-    location: { origin: "21.4% 70.8%", scale: 2.0 },  // the wooden sign (.hero__layer--signwood)
+    outlet: { origin: "52.1% 52%", scale: 1.8 },     // the whole tent + counter
+    homemade: { origin: "70.7% 51.3%", scale: 2.3 }, // the blank round seal, right of the tent
+    location: { origin: "25% 82%", scale: 2.6 },     // the blank sign near the bottom-left
   };
 
-  // the 6 stops below mirror a standalone diorama prototype (same source
-  // artwork, cut into layers) — titles/copy kept as written there, camera
-  // points converted from its pixel coordinates into this scene's origin%.
   const TOUR_STEPS = [
     { title: "Papan Lokasi", body: "Papan kayu Sidenreng, Rappang menyambut di pintu masuk. Dari rumah kami, untuk dibagi ke kamu.", point: POINTS.location, link: { label: "Lihat peta & jam buka", panel: "location" } },
-    { title: "Banner Teman Ngemil", body: "Camilan favorit terpampang di banner. Lihat pilihannya, lalu melangkah ke meja.", point: { origin: "29.4% 45.6%", scale: 1.8 } },
-    { title: "Papan Menu & Rak", body: "Papan menu di kiri dan kanan, toples berjajar di rak. Dipanggang dalam batch kecil setiap pagi dan dibungkus dengan tangan.", point: { origin: "49.5% 39.4%", scale: 2.1 } },
-    { title: "Meja Kasir", body: "Pesan dan bayar di meja krem berlogo Rumah Ngemil, tempat cookies, cake, pastry, dan minuman disajikan.", point: { origin: "49.6% 53.8%", scale: 1.9 } },
+    { title: "Banner Teman Ngemil", body: "Camilan favorit terpampang di banner. Lihat pilihannya, lalu melangkah ke meja.", point: { origin: "26% 58%", scale: 2.6 } },
+    { title: "Papan Menu & Rak", body: "Papan menu di kiri dan kanan, toples berjajar di rak. Dipanggang dalam batch kecil setiap pagi dan dibungkus dengan tangan.", point: { origin: "49.4% 52.3%", scale: 2.5 } },
+    { title: "Meja Kasir", body: "Pesan dan bayar di meja krem berlogo Rumah Ngemil, tempat cookies, cake, pastry, dan minuman disajikan.", point: { origin: "51% 62.5%", scale: 2.3 } },
     { title: "Fresh Homemade Happiness", body: "Papan bulat ini merangkum janji kami: segar, buatan rumah, dan bikin senang.", point: POINTS.homemade, link: { label: "Baca cerita lengkap", panel: "story" } },
     // pans home (overview) for a "there, you've seen it all" close, so
     // pinOrigin keeps the marker on the actual table/chairs instead of
-    // sitting on top of pin 3's — they'd otherwise land right on top of
-    // each other since both steps 3 and 6 are near the tent's center
-    { title: "Meja & Kursi Lipat", body: "Meja dan kursi lipat menunggu di depan tenda. Ngemil bareng, lalu bagi ke orang tersayang.", point: HOME, pinOrigin: "48.6% 66%", final: true },
+    // wherever HOME's own overview origin happens to be
+    { title: "Meja & Kursi Lipat", body: "Meja dan kursi lipat menunggu di depan tenda. Ngemil bareng, lalu bagi ke orang tersayang.", point: HOME, pinOrigin: "48.9% 69.4%", final: true },
   ];
 
   // numbered pins (1–6), one per tour stop, shown directly on the
