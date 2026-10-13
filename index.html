@@ -6,6 +6,12 @@
   <title>Rumah Ngemil — Semua berawal dari rumah</title>
   <meta name="description" content="Rumah Ngemil — camilan homemade dari Sidenreng, Rappang. Cookies, cake, pastry, hampers, dan minuman yang dibuat segar dari rumah." />
   <meta name="theme-color" content="#F1E7D3" />
+  <!-- without this, Android Chrome's "force dark" / auto-dark-theme
+       feature algorithmically inverts the page's warm cream/ink colors
+       on devices with system dark mode on — declaring the page as
+       light-only here (and via color-scheme in base.css) makes Chrome
+       render it exactly as authored instead -->
+  <meta name="color-scheme" content="light" />
 
   <link rel="icon" href="aset/logo.jpg" type="image/jpeg" />
   <link rel="apple-touch-icon" href="aset/logo.jpg" />

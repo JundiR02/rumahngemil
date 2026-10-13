@@ -6,6 +6,13 @@
    ===================================================================== */
 
 :root {
+  /* light-only — stops Android Chrome's force-dark feature from
+     algorithmically inverting the warm cream/ink palette when the
+     device is in system dark mode (belt-and-suspenders with the
+     color-scheme meta tag in index.html, since browsers vary in
+     which of the two they actually check) */
+  color-scheme: light;
+
   /* --- surfaces & ink --- */
   --cream: #f1e7d3;
   --parchment: #e8dabf;
